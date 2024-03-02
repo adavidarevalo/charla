@@ -1,43 +1,49 @@
 import 'dotenv/config'
 import 'express-async-errors'
-import express, {
-  type NextFunction,
-  type Request,
-  type Response
-} from 'express'
-import AppError from '@shared/errors/app_error'
+import express from 'express'
 import cors from 'cors'
 import { errors } from 'celebrate'
+import morgan from 'morgan'
+import helmet from 'helmet'
+import mongoSanitize from 'express-mongo-sanitize'
+import compression from 'compression'
+import fileUpload from 'express-fileupload'
+import cookieParser from 'cookie-parser'
+import logger from './../../config/logger.config'
+import errorHandlerMiddleware from './middleware/errorHandler'
+import './db/index'
 
 const app = express()
 
+if (process.env.NODE_ENV === 'dev') {
+  app.use(
+    morgan(':method :url :status :res[content-length] - :response-time ms')
+  )
+}
+
+app.use(helmet())
+
 app.use(cors())
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(mongoSanitize())
+app.use(compression())
+app.use(cookieParser())
+app.use(
+  fileUpload({
+    useTempFiles: true
+  })
+)
 
 app.get('/', (req, res) => {
-  res.send('Hello, World!')
+  res.send('Hello World!')
 })
 
 app.use(errors())
 
-app.use(
-  (error: Error, request: Request, response: Response, next: NextFunction) => {
-    if (error instanceof AppError) {
-      return response.status(error.statusCode).json({
-        status: 'error',
-        message: error.message
-      })
-    }
-
-    return response.status(500).json({
-      status: 'error',
-      message: 'Internal server error'
-    })
-  }
-)
+app.use(errorHandlerMiddleware)
 
 const port = process.env.PORT ?? 4000
-
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}!`)
+  logger.info(`Example app listening on port ${port}!`)
 })
