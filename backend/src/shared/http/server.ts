@@ -1,5 +1,9 @@
 import 'dotenv/config'
 import 'express-async-errors'
+import 'reflect-metadata'
+import '@shared/container'
+import './db/index'
+
 import express from 'express'
 import cors from 'cors'
 import { errors } from 'celebrate'
@@ -9,9 +13,12 @@ import mongoSanitize from 'express-mongo-sanitize'
 import compression from 'compression'
 import fileUpload from 'express-fileupload'
 import cookieParser from 'cookie-parser'
+import { rateLimit } from 'express-rate-limit'
+
 import logger from './../../config/logger.config'
 import errorHandlerMiddleware from './middleware/errorHandler'
-import './db/index'
+import routes from './routes'
+import rateLimiterConfig from '../../config/rate_limiter.config'
 
 const app = express()
 
@@ -20,6 +27,8 @@ if (process.env.NODE_ENV === 'dev') {
     morgan(':method :url :status :res[content-length] - :response-time ms')
   )
 }
+
+app.use(rateLimit(rateLimiterConfig))
 
 app.use(helmet())
 
@@ -35,9 +44,7 @@ app.use(
   })
 )
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.use('/api/v1', routes)
 
 app.use(errors())
 

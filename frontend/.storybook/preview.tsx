@@ -1,6 +1,10 @@
 import React from 'react'
 import type { Preview } from '@storybook/react'
 import { ChakraProvider } from '@chakra-ui/react';
+import { Formik } from 'formik'
+import { Provider } from 'react-redux';
+import { store } from '../src/redux/store';
+import { BrowserRouter } from 'react-router-dom';
 
 const preview: Preview = {
   parameters: {
@@ -15,7 +19,13 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <ChakraProvider>
-        <Story />
+        <Provider store={store}>
+          <BrowserRouter>
+            <Formik initialValues={{}} onSubmit={() => {}}>
+              <Story />
+            </Formik>
+          </BrowserRouter>
+        </Provider>
       </ChakraProvider>
     )
   ]

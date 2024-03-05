@@ -1,3 +1,5 @@
 export default function HomePage() {
-  return <div>Home</div>
+  return (
+    <p>Principal Chat</p>
+  )
 }

@@ -1,5 +1,6 @@
 import AppError from '@shared/errors/app_error'
 import { type NextFunction, type Request, type Response } from 'express'
+import logger from '../../../config/logger.config'
 
 const errorHandlerMiddleware = (
   error: Error,
@@ -12,6 +13,10 @@ const errorHandlerMiddleware = (
       status: 'error',
       message: error.message
     })
+  }
+
+  if (process.env.NODE_ENV === 'dev') {
+    logger.error(error.message)
   }
 
   return response.status(500).json({
