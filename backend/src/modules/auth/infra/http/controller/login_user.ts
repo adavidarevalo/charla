@@ -1,4 +1,4 @@
-import { IJWTProvider } from '@modules/auth/provider/jsonWebToken/model/IJWTProvider'
+import { IJWTProvider } from '@modules/auth/providers/jsonWebToken/model/IJWTProvider'
 import LoginUserService from '@modules/auth/services/login_user'
 
 import { type Request, type Response } from 'express'

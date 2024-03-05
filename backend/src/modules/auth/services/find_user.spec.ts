@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 import FakeUserRepository from '../domain/repositories/fakes/fake_user_repository'
-import { FakeHashProvider } from '../provider/hashProvider/fakes/FakeHashProvider'
+import { FakeHashProvider } from '../providers/hashProvider/fakes/FakeHashProvider'
 import CreateUserService from './create_user'
 import FindByIdUserService from './find_user'
 

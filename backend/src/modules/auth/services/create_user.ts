@@ -1,7 +1,7 @@
 import userRepository from '@modules/auth/infra/mongoose/repositories/user_repository'
 import AppError from '@shared/errors/app_error'
 import { injectable, inject } from 'tsyringe'
-import { type IHashProvider } from '../provider/hashProvider/model/IHashProvider'
+import { type IHashProvider } from '../providers/hashProvider/model/IHashProvider'
 import { type IUser } from '../domain/models/IUser'
 
 interface IRequest {
