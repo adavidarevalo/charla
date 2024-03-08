@@ -1,10 +1,10 @@
 import { Router } from 'express'
 import { celebrate, Joi, Segments } from 'celebrate'
 import { container } from 'tsyringe'
-import CreateUserController from '../controller/create_user'
-import LoginUserController from '../controller/login_user'
-import LogOutUserController from '../controller/logout'
-import RefreshTokenController from '../controller/refresh_token'
+import CreateUserController from '../controllers/create_user'
+import LoginUserController from '../controllers/login_user'
+import LogOutUserController from '../controllers/logout'
+import RefreshTokenController from '../controllers/refresh_token'
 
 class AuthRoutes {
   private readonly router: Router

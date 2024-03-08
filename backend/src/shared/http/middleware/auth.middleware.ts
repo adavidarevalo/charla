@@ -1,5 +1,5 @@
+import AppError from '@shared/errors/app_error'
 import { type NextFunction, type Request, type Response } from 'express'
-import createHttpError from 'http-errors'
 import jwt from 'jsonwebtoken'
 
 export const authMiddleware = (
@@ -7,24 +7,18 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ): void => {
-  try {
-    if (!req.headers.authorization) {
-      next(createHttpError.Unauthorized())
-      return
-    }
-
-    const token = req.headers.authorization.split(' ')[1]
-
-    const tokenContent = jwt.verify(token, `${process.env.JWT_SECRET}`)
-
-    if (!tokenContent) {
-      next(createHttpError.Unauthorized())
-      return
-    }
-
-    req.user = tokenContent
-    next()
-  } catch (error) {
-    next(createHttpError.Unauthorized())
+  if (!req.headers.authorization) {
+    throw new AppError('Authorization header is missing', 401)
   }
+
+  const token = req.headers.authorization.split(' ')[1]
+
+  const tokenContent = jwt.verify(token, `${process.env.ACCESS_TOKEN_SECRET}`)
+
+  if (!tokenContent) {
+    throw new AppError('Invalid token', 401)
+  }
+
+  req.user = tokenContent
+  next()
 }
