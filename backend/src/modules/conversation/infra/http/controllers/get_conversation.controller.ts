@@ -1,8 +1,8 @@
 import { type Response } from 'express'
 import get from 'lodash/get'
 
-import GetUserConversation from '@modules/conversation/services/get_user_conversation'
-import { type UserRequest } from './create_open_conversation'
+import GetUserConversation from '@modules/conversation/services/get_user_conversation.service'
+import { type UserRequest } from './create_open_conversation.controller'
 import { container } from 'tsyringe'
 
 class GetConversationController {

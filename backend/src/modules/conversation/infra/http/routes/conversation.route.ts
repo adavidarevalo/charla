@@ -1,9 +1,8 @@
 import { Router } from 'express'
 import { celebrate, Joi, Segments } from 'celebrate'
 import { authMiddleware } from '@shared/http/middleware/auth.middleware'
-import CreateOpenConversationController from '../controllers/create_open_conversation'
-import GetConversationController from '../controllers/get_conversation'
-import { container } from 'tsyringe'
+import CreateOpenConversationController from '../controllers/create_open_conversation.controller'
+import GetConversationController from '../controllers/get_conversation.controller'
 
 class ConversationRoutes {
   private readonly router: Router
@@ -15,9 +14,8 @@ class ConversationRoutes {
 
   private setupRoutes(): void {
     const getConversationController = new GetConversationController()
-    const createOpenConversationController = container.resolve(
-      CreateOpenConversationController
-    )
+    const createOpenConversationController =
+      new CreateOpenConversationController()
 
     this.router.post(
       '/',

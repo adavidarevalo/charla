@@ -1,12 +1,12 @@
 import { type Request, type Response } from 'express'
-import DoesConversationExist from '@modules/conversation/services/does_conversation_exist'
-import CreateConversation from '@modules/conversation/services/create_conversation'
-import PopulateConversation from '@modules/conversation/services/populate_conversation'
+import DoesConversationExist from '@modules/conversation/services/does_conversation_exist.service'
+import CreateConversation from '@modules/conversation/services/create_conversation.service'
+import PopulateConversation from '@modules/conversation/services/populate_conversation.service'
 import AppError from '@shared/errors/app_error'
 import get from 'lodash/get'
-import { container, inject, injectable } from 'tsyringe'
-import { IUserRepository } from '../../../../auth/domain/repositories/IUserRepository'
+import { container } from 'tsyringe'
 import { type ICreateConversationData } from '@modules/conversation/domain/model/ICreateConversationRequest'
+import FindByIdUserService from '@services/find_user.service'
 
 export interface UserRequest extends Request {
   user?: {
@@ -19,12 +19,7 @@ interface CreateOpenConversationControllerRequestBody {
   groupId: string
 }
 
-@injectable()
 class CreateOpenConversationController {
-  constructor(
-    @inject('UserRepository') private readonly UserRepository: IUserRepository
-  ) {}
-
   public async execute(
     request: UserRequest,
     response: Response
@@ -73,7 +68,9 @@ class CreateOpenConversationController {
       return response.status(200).json(existedConversation)
     }
 
-    const receiverUser = await this.UserRepository.findById(receiverId)
+    const findByIdUserService = container.resolve(FindByIdUserService)
+
+    const receiverUser = await findByIdUserService.execute(receiverId)
 
     if (!receiverUser) {
       throw new AppError('Receiver user not found', 400)

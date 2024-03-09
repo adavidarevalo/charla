@@ -1,7 +1,7 @@
 import 'reflect-metadata'
-import FakeConversationRepository from '../domain/repositories/fakes/FakeConversationRepository'
+import FakeConversationRepository from '../domain/repositories/fakes/fake_conversation_repository'
 import { type ICreateConversationData } from '../domain/model/ICreateConversationRequest'
-import CreateConversationService from './create_conversation'
+import CreateConversationService from './create_conversation.service'
 
 let createConversationService: CreateConversationService
 

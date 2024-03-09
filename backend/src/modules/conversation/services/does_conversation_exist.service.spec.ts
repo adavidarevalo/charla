@@ -1,9 +1,9 @@
 import 'reflect-metadata'
 
-import FakeConversationRepository from '../domain/repositories/fakes/FakeConversationRepository'
-import DoesConversationExistService from './does_conversation_exist'
+import FakeConversationRepository from '../domain/repositories/fakes/fake_conversation_repository'
+import DoesConversationExistService from './does_conversation_exist.service'
 import { type ICreateConversationData } from '../domain/model/ICreateConversationRequest'
-import CreateConversationService from './create_conversation'
+import CreateConversationService from './create_conversation.service'
 import AppError from '@shared/errors/app_error'
 
 let doesConversationExistService: DoesConversationExistService

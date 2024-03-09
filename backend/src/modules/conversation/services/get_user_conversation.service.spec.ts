@@ -1,25 +1,25 @@
 import 'reflect-metadata'
-import FakeConversationRepository from '../domain/repositories/fakes/FakeConversationRepository'
-import CreateConversationService from './create_conversation'
+import GetUserConversationService from './get_user_conversation.service'
+import FakeConversationRepository from '../domain/repositories/fakes/fake_conversation_repository'
+import CreateConversationService from './create_conversation.service'
 import { type ICreateConversationData } from '../domain/model/ICreateConversationRequest'
 import AppError from '@shared/errors/app_error'
-import PopulateConversationService from './populate_conversation'
 
-let populateConversationService: PopulateConversationService
+let getUserConversationService: GetUserConversationService
 let createConversationService: CreateConversationService
 
-describe('PopulateConversationService check', () => {
+describe('GetUserConversation check', () => {
   beforeEach(() => {
     const fakeConversationRepository = new FakeConversationRepository()
     createConversationService = new CreateConversationService(
       fakeConversationRepository
     )
-    populateConversationService = new PopulateConversationService(
+    getUserConversationService = new GetUserConversationService(
       fakeConversationRepository
     )
   })
 
-  it('Should return the  conversations', async () => {
+  it("Should return the user's conversations", async () => {
     const newConversation: ICreateConversationData = {
       _id: '234',
       name: 'test',
@@ -30,19 +30,12 @@ describe('PopulateConversationService check', () => {
 
     await createConversationService.execute(newConversation)
 
-    const conversation = await populateConversationService.execute(
-      '234',
-      '',
-      ''
-    )
+    const conversation = await getUserConversationService.execute('123')
 
-    expect(conversation).toHaveProperty('_id')
-    expect(conversation).toHaveProperty('name')
-    expect(conversation).toHaveProperty('isGroup')
-    expect(conversation).toHaveProperty('users')
+    expect(conversation).toHaveLength(1)
   })
   it("Should return null if the user doesn't have any conversations", async () => {
-    const conversation = populateConversationService.execute('asd', '', '')
+    const conversation = getUserConversationService.execute('asd')
 
     void expect(conversation).rejects.toBeInstanceOf(AppError)
   })
