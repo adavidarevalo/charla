@@ -1,5 +1,5 @@
 import { type IUser } from '@modules/auth/domain/models/IUser'
-import UserModel from '../entities/user'
+import UserModel from '../entities/user.entitie'
 import { type IUserRepository } from '@modules/auth/domain/repositories/IUserRepository'
 
 class UserRepository implements IUserRepository {

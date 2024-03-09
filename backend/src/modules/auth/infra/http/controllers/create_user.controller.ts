@@ -1,5 +1,5 @@
 import { IJWTProvider } from '@modules/auth/providers/jsonWebToken/model/IJWTProvider'
-import CreateUserService from '@modules/auth/services/create_user'
+import CreateUserService from '@services/create_user.service'
 import { type Request, type Response } from 'express'
 import { container, inject, injectable } from 'tsyringe'
 

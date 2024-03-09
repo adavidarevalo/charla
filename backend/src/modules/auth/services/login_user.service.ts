@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/app_error'
 import { inject, injectable } from 'tsyringe'
-import userRepository from '@modules/auth/infra/mongoose/repositories/user_repository'
+import userRepository from '@modules/auth/infra/mongoose/repositories/user.repository'
 import { IHashProvider } from '../providers/hashProvider/model/IHashProvider'
 import { type IUser } from '../domain/models/IUser'
 

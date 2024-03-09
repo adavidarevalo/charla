@@ -1,5 +1,5 @@
 import { IJWTProvider } from '@modules/auth/providers/jsonWebToken/model/IJWTProvider'
-import FindByIdUserService from '@modules/auth/services/find_user'
+import FindByIdUserService from '@services/find_user.service'
 import AppError from '@shared/errors/app_error'
 import { type Request, type Response } from 'express'
 import { container, inject, injectable } from 'tsyringe'

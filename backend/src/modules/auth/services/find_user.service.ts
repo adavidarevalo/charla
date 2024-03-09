@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe'
 import { type IUser } from '../domain/models/IUser'
-import userRepository from '@modules/auth/infra/mongoose/repositories/user_repository'
+import userRepository from '@modules/auth/infra/mongoose/repositories/user.repository'
 
 @injectable()
 class FindByIdUserService {

@@ -1,4 +1,4 @@
-import userRepository from '@modules/auth/infra/mongoose/repositories/user_repository'
+import userRepository from '@modules/auth/infra/mongoose/repositories/user.repository'
 import AppError from '@shared/errors/app_error'
 import { injectable, inject } from 'tsyringe'
 import { type IHashProvider } from '../providers/hashProvider/model/IHashProvider'

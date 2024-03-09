@@ -16,7 +16,7 @@ import cookieParser from 'cookie-parser'
 import { rateLimit } from 'express-rate-limit'
 
 import logger from './../../config/logger.config'
-import errorHandlerMiddleware from './middleware/errorHandler'
+import errorHandlerMiddleware from './middleware/error_handler.middleware'
 import routes from './routes'
 import rateLimiterConfig from '../../config/rate_limiter.config'
 
