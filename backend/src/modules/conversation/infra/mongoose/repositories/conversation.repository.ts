@@ -1,5 +1,5 @@
 import { type IConversationRepository } from '@modules/conversation/domain/repositories/IConversationRepository'
-import ConversationModel from './../../mongoose/entities/conversation'
+import ConversationModel from '../entities/conversation.entitie'
 import UserModel from '@modules/auth/infra/mongoose/entities/user.entitie'
 import { type IConversationFindResult } from '@modules/conversation/domain/model/IConversationFindResult'
 import { type ICreateConversationData } from '@modules/conversation/domain/model/ICreateConversationRequest'
@@ -82,6 +82,20 @@ class ConversationRepository implements IConversationRepository {
       })
 
     return conversations
+  }
+
+  async updateLastMessage(
+    conversationId: string,
+    messageId: string
+  ): Promise<IConversationFindResult | null> {
+    const updatedConversation = await ConversationModel.findByIdAndUpdate(
+      conversationId,
+      {
+        latestMessage: messageId
+      }
+    )
+
+    return updatedConversation
   }
 }
 

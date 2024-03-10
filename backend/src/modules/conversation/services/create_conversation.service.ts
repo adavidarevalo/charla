@@ -13,7 +13,7 @@ class CreateConversationService {
 
   async execute(
     conversationData: ICreateConversationData
-  ): Promise<IConversationFindResult> {
+  ): Promise<IConversationFindResult | null> {
     const conversation =
       await this.ConversationRepository.create(conversationData)
 

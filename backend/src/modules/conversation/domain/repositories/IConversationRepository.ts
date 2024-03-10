@@ -23,4 +23,8 @@ export interface IConversationRepository {
   getConversationByUserId: (
     userId: string
   ) => Promise<IConversationFindResult[] | null>
+  updateLastMessage: (
+    conversationId: string,
+    message: string
+  ) => Promise<IConversationFindResult | null>
 }

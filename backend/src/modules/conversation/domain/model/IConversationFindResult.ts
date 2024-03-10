@@ -5,6 +5,7 @@ export interface IConversationFindResult {
   name: string
   isGroup: boolean
   users: Array<string | IUser>
+  latestMessage: string
   createdAt?: Date
   updatedAt?: Date
 }

@@ -2,9 +2,10 @@ import { type IConversationRepository } from '../IConversationRepository'
 import { type IConversation } from '../../model/IConversation'
 import { type ICreateConversationData } from '../../model/ICreateConversationRequest'
 import { type IConversationFindResult } from '../../model/IConversationFindResult'
+import get from 'lodash/get'
 
 class FakeConversationRepository implements IConversationRepository {
-  private readonly conversations: IConversation[] = []
+  private conversations: IConversation[] = []
 
   async create(
     conversationData: ICreateConversationData
@@ -39,7 +40,8 @@ class FakeConversationRepository implements IConversationRepository {
         _id: `${conversationResult?._id}`,
         name: conversationResult.name,
         isGroup: conversationResult.isGroup,
-        users: conversationResult.users
+        users: conversationResult.users,
+        latestMessage: conversationResult.latestMessage
       }
     ]
   }
@@ -58,7 +60,8 @@ class FakeConversationRepository implements IConversationRepository {
         _id: `${conversationResult?._id}`,
         name: conversationResult.name,
         isGroup: conversationResult.isGroup,
-        users: conversationResult.users
+        users: conversationResult.users,
+        latestMessage: conversationResult.latestMessage
       }
     ]
   }
@@ -78,7 +81,8 @@ class FakeConversationRepository implements IConversationRepository {
       _id: `${conversationResult?._id}`,
       name: conversationResult.name,
       isGroup: conversationResult.isGroup,
-      users: conversationResult.users
+      users: conversationResult.users,
+      latestMessage: conversationResult.latestMessage
     }
   }
 
@@ -95,7 +99,8 @@ class FakeConversationRepository implements IConversationRepository {
       _id: `${conversationResult?._id}`,
       name: conversationResult.name,
       isGroup: conversationResult.isGroup,
-      users: conversationResult.users
+      users: conversationResult.users,
+      latestMessage: conversationResult.latestMessage
     }
   }
 
@@ -108,6 +113,31 @@ class FakeConversationRepository implements IConversationRepository {
       name: conversationResult.name,
       isGroup: conversationResult.isGroup,
       users: conversationResult.users
+    }
+  }
+
+  async updateLastMessage(
+    conversationId: string,
+    message: string
+  ): Promise<IConversationFindResult | null> {
+    let conversationUpdated: IConversation | null = null
+
+    this.conversations = this.conversations.map((conversation) => {
+      if (conversation._id === conversationId) {
+        conversation.latestMessage = message
+        conversationUpdated = conversation
+      }
+      return conversation
+    })
+
+    if (!conversationUpdated) return null
+
+    return {
+      _id: get(conversationUpdated, '_id'),
+      name: get(conversationUpdated, 'name'),
+      isGroup: get(conversationUpdated, 'isGroup'),
+      users: get(conversationUpdated, 'users'),
+      latestMessage: get(conversationUpdated, 'latestMessage')
     }
   }
 }
