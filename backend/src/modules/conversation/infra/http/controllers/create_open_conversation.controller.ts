@@ -7,6 +7,7 @@ import get from 'lodash/get'
 import { container } from 'tsyringe'
 import { type ICreateConversationData } from '@modules/conversation/domain/model/ICreateConversationRequest'
 import FindByIdUserService from '@services/find_user.service'
+import { type IConversationFindResult } from '@modules/conversation/domain/model/IConversationFindResult'
 
 export interface UserRequest extends Request {
   user?: {
@@ -23,7 +24,7 @@ class CreateOpenConversationController {
   public async execute(
     request: UserRequest,
     response: Response
-  ): Promise<Response<any, Record<string, any>>> {
+  ): Promise<Response<IConversationFindResult>> {
     const senderId: string = get(request, 'user.userId', '')
 
     const { receiverId, groupId } =

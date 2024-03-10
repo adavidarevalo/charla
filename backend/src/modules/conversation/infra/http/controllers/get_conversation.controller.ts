@@ -4,12 +4,13 @@ import get from 'lodash/get'
 import GetUserConversation from '@modules/conversation/services/get_user_conversation.service'
 import { type UserRequest } from './create_open_conversation.controller'
 import { container } from 'tsyringe'
+import { type IConversationFindResult } from '@modules/conversation/domain/model/IConversationFindResult'
 
 class GetConversationController {
   public async execute(
     request: UserRequest,
     response: Response
-  ): Promise<Response<any, Record<string, any>>> {
+  ): Promise<Response<IConversationFindResult[] | null>> {
     const senderId: string = get(request, 'user.userId', '')
 
     const getUserConversation = container.resolve(GetUserConversation)
