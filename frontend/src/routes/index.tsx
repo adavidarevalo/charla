@@ -7,11 +7,11 @@ import { AppState } from "../redux/store";
 import SignUpPage from "../pages/sign_up";
 import SignInPage from "../pages/sign_in";
 
- const HomePage = React.lazy(() => import("../pages/home"))
+ const ChatPage = React.lazy(() => import("../pages/chat"))
 
 const MainRoutes = () => {
   const { user: {token} } = useSelector((state: AppState) => state.user)
-
+  
   return (
     <BrowserRouter>
       <Routes>
@@ -25,8 +25,9 @@ const MainRoutes = () => {
         />
         <Route
           path="/"
-          element={token ? <HomePage /> : <Navigate to={'/sign-in'} />}
+          element={token ? <ChatPage /> : <Navigate to={'/sign-in'} />}
         />
+       
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

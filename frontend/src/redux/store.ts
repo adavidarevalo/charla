@@ -1,8 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import userSlice, { initialState } from './slices/user.slice'
+import userSlice, {
+  initialState as userInitialState
+} from './slices/user.slice'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer, persistStore } from 'redux-persist'
 import createFilter from 'redux-persist-transform-filter'
+import chatSlice, {
+  initialState as chatInitialState
+} from './slices/chat.slice'
 
 const saveUserOnlyFilter = createFilter('user', ['user'])
 
@@ -14,11 +19,13 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-  user: userSlice
+  user: userSlice,
+  chat: chatSlice
 })
 
 interface RootState {
-  user: typeof initialState
+  user: typeof userInitialState
+  chat: typeof chatInitialState
 }
 
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer)
