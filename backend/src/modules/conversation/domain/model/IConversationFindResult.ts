@@ -1,4 +1,4 @@
-import { type IUser } from '@modules/auth/domain/models/IUser'
+import { type IUser } from '@modules/auth/domain/models/IAuthUser'
 
 export interface IConversationFindResult {
   _id: string

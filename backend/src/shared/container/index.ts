@@ -1,5 +1,5 @@
-import { type IUserRepository } from '@modules/auth/domain/repositories/IUserRepository'
-import UserRepository from '@modules/auth/infra/mongoose/repositories/user.repository'
+import { type IAuthRepository } from '@modules/auth/domain/repositories/IAuthRepository'
+import AuthRepository from '@modules/auth/infra/mongoose/repositories/auth.repository'
 import { container } from 'tsyringe'
 
 import '@modules/auth/providers'
@@ -8,7 +8,7 @@ import ConversationRepository from '@modules/conversation/infra/mongoose/reposit
 import { type IMessageRepository } from '@modules/messages/domain/repositories/IMessageRepository'
 import MessageRepository from '@modules/messages/infra/mongoose/repositories/message.repository'
 
-container.registerSingleton<IUserRepository>('UserRepository', UserRepository)
+container.registerSingleton<IAuthRepository>('AuthRepository', AuthRepository)
 container.registerSingleton<IConversationRepository>(
   'ConversationRepository',
   ConversationRepository

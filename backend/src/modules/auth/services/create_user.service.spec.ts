@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import CreateUserService from './create_user.service'
-import FakeUserRepository from '../domain/repositories/fakes/fake_user_repository'
+import FakeAuthRepository from '../domain/repositories/fakes/fake_auth_repository'
 import { FakeHashProvider } from '../providers/hashProvider/fakes/FakeHashProvider'
 import AppError from '@shared/errors/app_error'
 
@@ -8,9 +8,9 @@ let createUser: CreateUserService
 
 describe('CreateUser', () => {
   beforeEach(() => {
-    const fakeUserRepository = new FakeUserRepository()
+    const fakeAuthRepository = new FakeAuthRepository()
     const fakeHashProvider = new FakeHashProvider()
-    createUser = new CreateUserService(fakeUserRepository, fakeHashProvider)
+    createUser = new CreateUserService(fakeAuthRepository, fakeHashProvider)
   })
 
   it('should be able to create a new user', async () => {

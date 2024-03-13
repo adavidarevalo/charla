@@ -1,15 +1,15 @@
 import { inject, injectable } from 'tsyringe'
-import { type IUser } from '../domain/models/IUser'
-import userRepository from '@modules/auth/infra/mongoose/repositories/user.repository'
+import { type IAuthUser } from '../domain/models/IAuthUser'
+import authRepository from '@modules/auth/infra/mongoose/repositories/auth.repository'
 
 @injectable()
 class FindByIdUserService {
   constructor(
-    @inject('UserRepository') private readonly UserRepository: userRepository
+    @inject('AuthRepository') private readonly AuthRepository: authRepository
   ) {}
 
-  public async execute(id: string): Promise<IUser | null> {
-    const findEmail = await this.UserRepository.findById(id)
+  public async execute(id: string): Promise<IAuthUser | null> {
+    const findEmail = await this.AuthRepository.findById(id)
 
     return findEmail
   }

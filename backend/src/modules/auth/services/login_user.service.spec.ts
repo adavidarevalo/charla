@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import FakeUserRepository from '../domain/repositories/fakes/fake_user_repository'
+import FakeAuthRepository from '../domain/repositories/fakes/fake_auth_repository'
 import { FakeHashProvider } from '../providers/hashProvider/fakes/FakeHashProvider'
 import CreateUserService from './create_user.service'
 import LoginUserService from './login_user.service'
@@ -9,11 +9,11 @@ let loginUser: LoginUserService
 
 describe('LoginUserService', () => {
   beforeEach(async () => {
-    const fakeUserRepository = new FakeUserRepository()
+    const fakeAuthRepository = new FakeAuthRepository()
     const fakeHashProvider = new FakeHashProvider()
-    loginUser = new LoginUserService(fakeUserRepository, fakeHashProvider)
+    loginUser = new LoginUserService(fakeAuthRepository, fakeHashProvider)
     const createUser = new CreateUserService(
-      fakeUserRepository,
+      fakeAuthRepository,
       fakeHashProvider
     )
     await createUser.execute({

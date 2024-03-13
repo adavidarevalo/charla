@@ -1,8 +1,8 @@
 import AppError from '@shared/errors/app_error'
 import { inject, injectable } from 'tsyringe'
-import userRepository from '@modules/auth/infra/mongoose/repositories/user.repository'
+import authRepository from '@modules/auth/infra/mongoose/repositories/auth.repository'
 import { IHashProvider } from '../providers/hashProvider/model/IHashProvider'
-import { type IUser } from '../domain/models/IUser'
+import { type IAuthUser } from '../domain/models/IAuthUser'
 
 interface IRequest {
   email: string
@@ -12,15 +12,15 @@ interface IRequest {
 @injectable()
 class LoginUserService {
   constructor(
-    @inject('UserRepository') private readonly UserRepository: userRepository,
+    @inject('AuthRepository') private readonly AuthRepository: authRepository,
     @inject('HashProvider') private readonly hashProvider: IHashProvider
   ) {}
 
   public async execute({
     email,
     password
-  }: IRequest): Promise<Omit<IUser, 'password'> | null> {
-    const user = await this.UserRepository.findByEmail(email)
+  }: IRequest): Promise<Omit<IAuthUser, 'password'> | null> {
+    const user = await this.AuthRepository.findByEmail(email)
 
     if (!user) {
       throw new AppError('Invalid credentials', 400)

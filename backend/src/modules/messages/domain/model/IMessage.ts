@@ -1,4 +1,4 @@
-import { type IUser } from '@modules/auth/domain/models/IUser'
+import { type IUser } from '@modules/auth/domain/models/IAuthUser'
 import { type IConversation } from '@modules/conversation/domain/model/IConversation'
 
 export interface IMessage {

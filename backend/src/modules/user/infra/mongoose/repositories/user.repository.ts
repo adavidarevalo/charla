@@ -1,5 +1,5 @@
-import { type IUser } from '@modules/auth/domain/models/IUser'
-import UserModel from '@modules/auth/infra/mongoose/entities/user.entitie'
+import { type IUser } from '@modules/auth/domain/models/IAuthUser'
+import UserModel from '@modules/auth/infra/mongoose/entities/user.entity'
 // import UserModel from '../entities/user.entitie'
 import { type IUserRepository } from '@modules/user/domain/repositories/IUserRepository'
 

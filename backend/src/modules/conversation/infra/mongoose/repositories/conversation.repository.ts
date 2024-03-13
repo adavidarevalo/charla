@@ -1,6 +1,6 @@
 import { type IConversationRepository } from '@modules/conversation/domain/repositories/IConversationRepository'
 import ConversationModel from '../entities/conversation.entitie'
-import UserModel from '@modules/auth/infra/mongoose/entities/user.entitie'
+import UserModel from '@modules/auth/infra/mongoose/entities/user.entity'
 import { type IConversationFindResult } from '@modules/conversation/domain/model/IConversationFindResult'
 import { type ICreateConversationData } from '@modules/conversation/domain/model/ICreateConversationRequest'
 
