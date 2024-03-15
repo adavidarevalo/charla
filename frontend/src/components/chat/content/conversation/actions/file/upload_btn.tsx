@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react"
-import { bytescaleSecret } from "../../../../../utils/variables"
+import { bytescaleSecret } from "../../../../../../utils/variables"
 import { UploadButton } from '@bytescale/upload-widget-react'
-import { useSendMessageContext } from "./context"
+import { useSendMessageContext } from "../context"
 import { GoPaperclip } from "react-icons/go"
 
 const options = {

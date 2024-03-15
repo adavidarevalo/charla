@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import { FileIcon } from 'react-file-icon'
-import { useSendMessageContext } from './context'
-import { bytesToMB } from '../utils'
+import { useSendMessageContext } from '../context'
+import { bytesToMB } from '../../utils'
 import { MdOutlineDelete } from 'react-icons/md'
 
 export default function PreviewFile() {

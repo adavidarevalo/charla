@@ -32,7 +32,7 @@ export default function Message({ message, isMe }: MessageProps) {
         )}
         {message.message && <Text fontSize={'21px'}>{message.message}</Text>}
         {message.files.map((file) => (
-          <FileView file={file} />
+          <FileView file={file} key={file.fileUrl} />
         ))}
         <Text
           textAlign={'end'}

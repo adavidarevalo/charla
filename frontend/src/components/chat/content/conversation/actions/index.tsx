@@ -1,13 +1,13 @@
 import { Flex } from '@chakra-ui/react'
-import UploadBtn from './upload_btn'
-import EmojiPickerContainer from './emoji_picker_container'
+import UploadBtn from './file/upload_btn'
+import EmojiPickerContainer from './emoji/picker_container'
 import InputMessage from './input'
 import SendMessageProvider from './context'
 import SendMessageBtn from './send_message_btn'
-import PreviewFile from './preview_file'
-import EmojiBtn from './emoji_btn'
+import PreviewFile from './file/preview_file'
+import EmojiBtn from './emoji/btn'
 
-export default function ChatInput() {
+export default function ConversationActions() {
   return (
     <SendMessageProvider>
       <Flex

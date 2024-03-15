@@ -1,6 +1,6 @@
 import { Button } from '@chakra-ui/react'
 import { BsEmojiSmile } from 'react-icons/bs'
-import { useSendMessageContext } from './context'
+import { useSendMessageContext } from '../context'
 
 export default function EmojiBtn() {
     const { setIsShowEmojiPicker } = useSendMessageContext()

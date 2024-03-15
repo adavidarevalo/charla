@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react'
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
 import get from 'lodash/get'
 import set from 'lodash.set'
-import { useSendMessageContext } from './context'
+import { useSendMessageContext } from '../context'
 import { useEffect, useState } from 'react'
 
 export default function EmojiPickerContainer() {

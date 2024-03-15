@@ -1,7 +1,7 @@
 import { GridItem } from "@chakra-ui/react";
 import HeaderConversation from "./header";
 import ChatContent from "./chat_content";
-import ChatInput from "./send_message";
+import ConversationActions from "./actions";
 import { AppDispatch, AppState } from '../../../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from "react";
@@ -37,7 +37,7 @@ export default function Conversation() {
         <ChatContent/>
       </GridItem>
       <GridItem rowSpan={1} colSpan={1}>
-        <ChatInput/>
+        <ConversationActions/>
       </GridItem>
     </>
   )

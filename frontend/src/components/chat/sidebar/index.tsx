@@ -1,6 +1,6 @@
 import {  Grid, GridItem } from '@chakra-ui/react'
-import FindChatInput from './find_chat_input'
-import ChatConversations from './conversations'
+import SearchInput from './search_input'
+import ChatPreviewResultContent from './preview_result_content'
 import SidebarChatProvider from './context'
 
 export default function ChatSidebar() {
@@ -13,10 +13,10 @@ export default function ChatSidebar() {
         borderRight={'1px solid #eaeff6'}
       >
         <GridItem rowSpan={0} colSpan={1}>
-          <FindChatInput />
+          <SearchInput />
         </GridItem>
         <GridItem rowSpan={9} colSpan={1} p={'20px'}>
-          <ChatConversations />
+          <ChatPreviewResultContent />
         </GridItem>
       </Grid>
     </SidebarChatProvider>

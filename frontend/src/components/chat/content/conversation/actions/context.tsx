@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppState, AppDispatch } from '../../../../../redux/store';
 import { sendMessage } from '../../../../../redux/actions/chat.actions';
-import {File} from "./../../../../../types/message.type" 
+import {File} from "../../../../../types/message.type" 
 
 const initialState = {
   messageValue: '',

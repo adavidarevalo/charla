@@ -4,11 +4,10 @@ import { FaMagnifyingGlass } from 'react-icons/fa6'
 import { useDebounce } from 'use-debounce'
 import { useSidebarChat } from './context'
 
-export default function FindChatInput() {
+export default function SearchInput() {
   const { handleSearch } = useSidebarChat()
   const [searchValue, setSearchValue] = useState("")
   const [value] = useDebounce(searchValue, 1000)
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
