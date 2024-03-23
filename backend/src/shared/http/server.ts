@@ -19,6 +19,8 @@ import logger from './../../config/logger.config'
 import errorHandlerMiddleware from './middleware/error_handler.middleware'
 import routes from './routes'
 import rateLimiterConfig from '../../config/rate_limiter.config'
+import { Server } from 'socket.io'
+import socketServer from './socket/server'
 
 const app = express()
 
@@ -51,6 +53,18 @@ app.use(errors())
 app.use(errorHandlerMiddleware)
 
 const port = process.env.PORT ?? 4000
-app.listen(port, () => {
+const server = app.listen(port, () => {
   logger.info(`Example app listening on port ${port}!`)
+})
+
+const io = new Server(server, {
+  pingInterval: 60000,
+  cors: {
+    origin: process.env.CLIENT_ENDPOINT,
+    methods: ['GET', 'POST']
+  }
+})
+
+io.on('connection', (socket) => {
+  socketServer(socket, io)
 })

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { AppState } from "../redux/store";
 import SignUpPage from "../pages/sign_up";
 import SignInPage from "../pages/sign_in";
+import { SocketProvider } from '../context/socket.context';
 
  const ChatPage = React.lazy(() => import("../pages/chat"))
 
@@ -23,11 +24,21 @@ const MainRoutes = () => {
           path="/sign-up"
           element={token ? <Navigate to={'/'} /> : <SignUpPage />}
         />
-        <Route
-          path="/"
-          element={token ? <ChatPage /> : <Navigate to={'/sign-in'} />}
-        />
-       
+        <>
+          <Route
+            path="/"
+            element={
+              token ? (
+                <SocketProvider>
+                  <ChatPage />
+                </SocketProvider>
+              ) : (
+                <Navigate to={'/sign-in'} />
+              )
+            }
+          />
+        </>
+
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

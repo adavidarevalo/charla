@@ -3,9 +3,12 @@ import { useSelector } from 'react-redux'
 import { AppState } from '../../../../redux/store'
 import Message from './message'
 import { useEffect, useRef } from 'react'
+import TypingMessage from './message/typing'
 
 export default function ChatContent() {
-  const { messages } = useSelector((state: AppState) => state.chat)
+  const { messages, conversationTyping, activeConversation } = useSelector(
+    (state: AppState) => state.chat
+  )
 
   const { user } = useSelector((state: AppState) => state.user)
 
@@ -27,6 +30,9 @@ export default function ChatContent() {
           message={message}
         />
       ))}
+      {conversationTyping.includes(activeConversation?._id || '') && (
+        <TypingMessage messagesRef={messagesRef} />
+      )}
     </Box>
   )
 }

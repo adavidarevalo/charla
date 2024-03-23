@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppState, AppDispatch } from '../../../../../redux/store';
 import { sendMessage } from '../../../../../redux/actions/chat.actions';
 import {File} from "../../../../../types/message.type" 
+import { useSocket } from '../../../../../context/socket.context';
 
 const initialState = {
   messageValue: '',
@@ -43,6 +44,7 @@ const SendMessageProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useSelector((state: AppState) => state.user)
   const { activeConversation } = useSelector((state: AppState) => state.chat)
   const dispatch = useDispatch<AppDispatch>()
+  const { socket } = useSocket()
 
     const handleSendMessage = async () => {
       setIsLoading(true)
@@ -52,7 +54,9 @@ const SendMessageProvider = ({ children }: { children: React.ReactNode }) => {
         token: user?.token || '',
         files: file
       }
-      await dispatch(sendMessage(value))
+      
+      const newMessage = await dispatch(sendMessage(value))
+      socket?.emit('send message', newMessage.payload)
       setMessageValue('')
       setFile([])
       setIsLoading(false)

@@ -3,6 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import {Provider} from "react-redux"
 import { store } from './redux/store'
 import MainRoutes from './routes'
+window.global ||= window
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <>

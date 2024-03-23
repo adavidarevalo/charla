@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from '@chakra-ui/react'
+import { Avatar, AvatarBadge, Box, Flex, Text } from '@chakra-ui/react'
 import { Conversation } from '../../../../types/conversation.type'
 import { AppDispatch, AppState } from '../../../../redux/store'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,6 +7,8 @@ import capitalize from 'lodash.capitalize'
 import truncate from 'lodash.truncate'
 import { open_create_conversation } from '../../../../redux/actions/chat.actions'
 import { ISearchedResult, useSidebarChat } from '../context'
+import { useSocket } from '../../../../context/socket.context';
+import { useMemo } from 'react'
 
 interface PreviewResultProps {
   data: Conversation | ISearchedResult
@@ -15,10 +17,13 @@ interface PreviewResultProps {
 export default function PreviewResult({
   data
 }: PreviewResultProps) {
+  const { socket } = useSocket()
     const { isSearching} = useSidebarChat()
   const { user } = useSelector((state: AppState) => state.user)
   const dispatch = useDispatch<AppDispatch>()
-  const { activeConversation } = useSelector((state: AppState) => state.chat)
+  const { activeConversation, onlineUsers } = useSelector(
+    (state: AppState) => state.chat
+  )
 
   const { receiver_id, picture, name, subtitle } = getVariables(
     data,
@@ -26,13 +31,18 @@ export default function PreviewResult({
     user
   )
 
+    const insOnline = useMemo(() => {
+      return onlineUsers.some(({ userId }) => userId === receiver_id)
+    }, [activeConversation, onlineUsers])
+
   const handleSelect = async () => {
-    const value = {
-      receiver_id,
-      token: user?.token
-    }
     try {
+      const value = {
+        receiver_id,
+        token: user?.token
+      }
       await dispatch(open_create_conversation(value))
+      socket?.emit('join conversation', data?._id)
     } catch (error) {
       console.error(error)
     }
@@ -50,14 +60,11 @@ export default function PreviewResult({
       bg={activeConversation?._id === data._id ? '#EEEEF8' : ''}
       onClick={handleSelect}
     >
-      <Image
-        w={'80px'}
-        h={'80px'}
-        objectFit={'cover'}
-        rounded={'10px'}
-        src={picture}
-        alt={data.name}
-      />
+      <Box>
+        <Avatar src={picture} name={data.name}>
+          {insOnline && <AvatarBadge boxSize="1.25em" bg="green.500" />}
+        </Avatar>
+      </Box>
       <Box w={'full'} pl={'20px'}>
         <Text as={'b'} fontSize={'25px'} color={'#2D2D2F'}>
           {capitalize(name)}
