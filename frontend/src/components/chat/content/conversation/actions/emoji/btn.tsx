@@ -9,7 +9,7 @@ export default function EmojiBtn() {
       variant="outline"
       _hover={{ bg: 'none' }}
       border={'transparent'}
-      color={'#454686'}
+      color={'purple.800'}
       onClick={() => setIsShowEmojiPicker((prev) => !prev)}
     >
       <BsEmojiSmile size={'30px'} />

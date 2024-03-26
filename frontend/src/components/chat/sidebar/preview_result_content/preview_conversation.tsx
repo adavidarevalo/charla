@@ -7,18 +7,16 @@ import capitalize from 'lodash.capitalize'
 import truncate from 'lodash.truncate'
 import { open_create_conversation } from '../../../../redux/actions/chat.actions'
 import { ISearchedResult, useSidebarChat } from '../context'
-import { useSocket } from '../../../../context/socket.context';
+import { useSocket } from '../../../../context/socket.context'
 import { useMemo } from 'react'
 
 interface PreviewResultProps {
   data: Conversation | ISearchedResult
 }
 
-export default function PreviewResult({
-  data
-}: PreviewResultProps) {
+export default function PreviewResult({ data }: PreviewResultProps) {
   const { socket } = useSocket()
-    const { isSearching} = useSidebarChat()
+  const { isSearching } = useSidebarChat()
   const { user } = useSelector((state: AppState) => state.user)
   const dispatch = useDispatch<AppDispatch>()
   const { activeConversation, onlineUsers } = useSelector(
@@ -31,9 +29,9 @@ export default function PreviewResult({
     user
   )
 
-    const insOnline = useMemo(() => {
-      return onlineUsers.some(({ userId }) => userId === receiver_id)
-    }, [activeConversation, onlineUsers])
+  const insOnline = useMemo(() => {
+    return onlineUsers.some(({ userId }) => userId === receiver_id)
+  }, [activeConversation, onlineUsers])
 
   const handleSelect = async () => {
     try {
@@ -56,8 +54,8 @@ export default function PreviewResult({
       rounded={'10px'}
       marginBlock={'5px'}
       cursor={'pointer'}
-      _hover={{ bg: activeConversation?._id !== data._id && '#EEEEF8' }}
-      bg={activeConversation?._id === data._id ? '#EEEEF8' : ''}
+      _hover={{ bg: activeConversation?._id !== data._id && 'purple.100' }}
+      bg={activeConversation?._id === data._id ? 'purple.100' : ''}
       onClick={handleSelect}
     >
       <Box>
@@ -66,16 +64,16 @@ export default function PreviewResult({
         </Avatar>
       </Box>
       <Box w={'full'} pl={'20px'}>
-        <Text as={'b'} fontSize={'25px'} color={'#2D2D2F'}>
+        <Text as={'b'} fontSize={'25px'} color={'black.950'}>
           {capitalize(name)}
         </Text>
-        <Text color={'#888CEF'} fontSize={'20px'}>
+        <Text color={'purple.900'} fontSize={'20px'}>
           {truncate(subtitle, { length: 25 })}
         </Text>
       </Box>
       {!isSearching && (
         <Box mr={'5px'}>
-          <Text color={'#9c9a9b'} fontSize={'18px'}>
+          <Text color={'black.400'} fontSize={'18px'}>
             {dateHandler((data as Conversation).latestMessage.updatedAt)}
           </Text>
         </Box>

@@ -4,6 +4,8 @@ import { AppState } from '../../../../redux/store'
 import Message from './message'
 import { useEffect, useRef } from 'react'
 import TypingMessage from './message/typing'
+// import { FixedSizeList as List } from 'react-window'
+// import AutoSizer from 'react-virtualized-auto-sizer'
 
 export default function ChatContent() {
   const { messages, conversationTyping, activeConversation } = useSelector(
@@ -12,17 +14,23 @@ export default function ChatContent() {
 
   const { user } = useSelector((state: AppState) => state.user)
 
-    const messagesRef = useRef<HTMLDivElement>(null)
+  const messagesRef = useRef<HTMLDivElement>(null)
 
-      useEffect(() => {
-        if (messagesRef.current) {
-          messagesRef.current.scrollTop = messagesRef.current.scrollHeight
-        }
-      }, [messages]) 
-
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight
+    }
+  }, [messages])
 
   return (
-    <Box w={'full'} h={'full'} p={'40px'} overflowX={'auto'} ref={messagesRef}>
+    <Box
+      w={'full'}
+      h={'full'}
+      p={'40px'}
+      overflowX={'auto'}
+      ref={messagesRef}
+    >
+      
       {(messages || []).map((message) => (
         <Message
           key={message._id}

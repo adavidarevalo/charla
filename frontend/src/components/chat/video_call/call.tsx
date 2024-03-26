@@ -1,40 +1,57 @@
-import { Box, Flex, IconButton, Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { Avatar, Box, Flex, IconButton, Text } from '@chakra-ui/react'
+import { useEffect, useMemo, useState } from 'react'
 import { AiFillAudio, AiFillSound } from 'react-icons/ai'
 import { ImPhoneHangUp } from 'react-icons/im'
 import { IoVideocam } from 'react-icons/io5'
-import { useVideoChat } from '../../../context/video_chat.context';
-
-const callOption = [
-  {
-    bg: '#7578ED',
-    color: '#FCFCFE',
-    icon: <AiFillSound />,
-    'aria-label': 'sound'
-  },
-  {
-    bg: '#7578ED',
-    color: '#FCFCFE',
-    icon: <IoVideocam />,
-    'aria-label': 'Video'
-  },
-  {
-    bg: '#7578ED',
-    color: '#FCFCFE',
-    icon: <AiFillAudio />,
-    'aria-label': 'Microphone'
-  },
-  {
-    bg: 'red',
-    color: '#FCFCFE',
-    icon: <ImPhoneHangUp />,
-    'aria-label': 'phone'
-  }
-]
+import { useVideoChat } from '../../../context/video_chat.context'
+import { AppState } from '../../../redux/store'
+import { useSelector } from 'react-redux'
+import Stopwatch from './stopwatch'
 
 export default function Call() {
-  const {myVideo, call} = useVideoChat()
+  const { user } = useSelector((state: AppState) => state.user)
+  const { myVideo, call, endCall, show, callAccepted, userVideo } =
+    useVideoChat()
   const [hover, setHover] = useState(false)
+  const audio = useMemo(() => new Audio('/audio/ringing.mp3'), [])
+
+  const callOption = [
+    {
+      bg: 'purple.500',
+      color: '#FCFCFE',
+      icon: <AiFillSound />,
+      'aria-label': 'sound'
+    },
+    {
+      bg: 'purple.500',
+      color: '#FCFCFE',
+      icon: <IoVideocam />,
+      'aria-label': 'Video'
+    },
+    {
+      bg: 'purple.500',
+      color: '#FCFCFE',
+      icon: <AiFillAudio />,
+      'aria-label': 'Microphone'
+    },
+    {
+      bg: 'red',
+      color: '#FCFCFE',
+      icon: <ImPhoneHangUp />,
+      'aria-label': 'phone',
+      onClick: endCall
+    }
+  ]
+
+  const isCalling = useMemo(
+    () => Boolean((show || call?.signal) && !call?.callEnded),
+    [show, call]
+  )
+
+  useEffect(() => {
+    isCalling && audio.play()
+    isCalling === false && audio.pause()
+  }, [isCalling])
 
   return (
     <Box
@@ -47,28 +64,56 @@ export default function Call() {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <Box
+      <Flex
+        bg={'red'}
+        position={'absolute'}
+        zIndex={100}
+        w={'full'}
+        justify={'space-between'}
+      >
+        <Box>
+          <Stopwatch />
+        </Box>
+        <Text as={'b'} fontSize={'23px'}>
+          {call?.name}
+        </Text>
+        <Box></Box>
+      </Flex>
+      <Flex
         w={'full'}
         h={'full'}
         rounded={'20px'}
-        bg={
-          'radial-gradient(circle, rgba(117,120,237,1) 0%, rgba(69,50,120,1) 100%)'
-        }
+        bg={'purple.100'}
+        justify={'center'}
+        align={'center'}
+        position={'relative'}
       >
         <Flex
           direction={'column'}
           align={'center'}
-          h={'100px'}
           justify={'center'}
+          position={'absolute'}
         >
-          <Text as={'b'} fontSize={'23px'}>
-            {call?.name}
-          </Text>
-          <Text fontSize={'21px'}>Ring Ring...</Text>
+          {!callAccepted && <Text fontSize={'21px'}>Ring Ring...</Text>}
+          {!callAccepted && (
+            <Avatar
+              size="2xl"
+              name={call?.name}
+              src={call?.picture}
+              mt={'20px'}
+            />
+          )}
         </Flex>
-      </Box>
-      <Box
-        bg={'red'}
+        {callAccepted && (
+          <video
+            ref={userVideo}
+            playsInline
+            autoPlay
+            style={{ height: '100%', objectFit: 'cover', borderRadius: '20px' }}
+          />
+        )}
+      </Flex>
+      <Flex
         position={'absolute'}
         w={'40%'}
         maxW={'300px'}
@@ -76,9 +121,24 @@ export default function Call() {
         bottom={hover ? '100px' : 0}
         right={0}
         rounded={'20px'}
+        justify={'center'}
+        align={'center'}
+        bg={'purple.300'}
       >
-        <video ref={myVideo} playsInline muted autoPlay></video>
-      </Box>
+        {show && (
+          <video
+            ref={myVideo}
+            playsInline
+            autoPlay
+            style={{
+              height: '100%',
+              objectFit: 'cover',
+              borderRadius: '20px'
+            }}
+          ></video>
+        )}
+        {!show && <Avatar size="lg" name={user.name} src={user.picture} />}
+      </Flex>
       {hover && (
         <Flex
           position={'absolute'}

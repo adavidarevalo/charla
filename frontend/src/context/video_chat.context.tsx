@@ -1,6 +1,3 @@
-// import global from 'global'
-// import * as process from 'process'
-// global.process = process
 import { ReactNode, useRef } from 'react'
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
@@ -26,6 +23,7 @@ interface VideoContextType {
   callAccepted: boolean
   stream: MediaStream | null
   myVideo: React.RefObject<HTMLVideoElement>
+  userVideo: React.RefObject<HTMLVideoElement>
 }
 
 const VideoChatContext = createContext<VideoContextType>({
@@ -36,7 +34,8 @@ const VideoChatContext = createContext<VideoContextType>({
   call: null,
   callAccepted: false,
   stream: null,
-  myVideo: { current: null }
+  myVideo: { current: null },
+  userVideo: { current: null }
 })
 
 const callData = {
@@ -45,7 +44,8 @@ const callData = {
   callEnded: false,
   name: '',
   picture: '',
-  signal: ''
+  signal: '',
+  isCallAccepted: false
 }
 
 export interface ICall {
@@ -55,6 +55,8 @@ export interface ICall {
   name: string
   picture: string
   signal: string
+  isCallAccepted: boolean
+  socketIdFrom?: string
 }
 
 export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
@@ -68,7 +70,6 @@ export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
 
   const [call, setCall] = useState<ICall>(callData)
   const [stream, setStream] = useState<MediaStream | null>(null)
-  console.log('🚀 ~ stream:', stream)
   const [callAccepted, setCallAccepted] = useState(false)
   const myVideo = useRef<HTMLVideoElement>(null)
   const userVideo = useRef<HTMLVideoElement>(null)
@@ -76,7 +77,6 @@ export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    // setupMedia()
     socket?.on('setup socket', (socketId: string) => {
       setCall((prev) => ({
         ...prev,
@@ -84,128 +84,114 @@ export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
       }))
     })
     socket?.on('call user', (data) => {
-      setCall((prev) => ({
+    setCall((prev) => ({
         ...prev,
         socketId: data.from,
         name: data.name,
         picture: data.picture,
         signal: data.signal,
         receivingCall: true
-      }))
+      }));
     })
-    socket?.on('end call', () => {
+    socket?.on('end call', () => {      
       setShow(false)
-      setCall((prev) => ({ ...prev, callEnded: true, receivingCall: false }))
-      myVideo.current!.srcObject = null
-      if (callAccepted && !call.callEnded) {
-        connectionRef?.current?.destroy()
-      }
+      setCall((prev) => ({ ...callData, socketId: prev.socketId }))
+      set(myVideo, 'current.srcObject', null)
     })
   }, [socket])
-
-  // const setupMedia = () => {
-  //   navigator?.mediaDevices
-  //     .getUserMedia({ video: true, audio: true })
-  //     .then((stream) => {
-  //       setStream(stream)
-  //     })
-  // }
+  
+  
+  useEffect(() => {
+    if (call.name === "" && !call.receivingCall && !call.isCallAccepted) {
+      stream?.getTracks().forEach((track) => track.stop())      
+    }
+ 
+  }, [call])
 
   const callUser = () => {
-   navigator?.mediaDevices
+    setShow(true)
+    navigator?.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         setStream(stream)
-          myVideo.current!.srcObject = stream
-          setShow(true)
-      })    
-
-    setCall((prev) => ({
-      ...prev,
-      name: getConversationName(
-        user as User,
-        activeConversation?.users as User[]
-      ),
-      picture: getConversationPicture(
-        user as User,
-        activeConversation?.users as User[]
-      )
-    }))
-
-    const peer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream: stream as MediaStream
-    })
-  
-    peer.on('signal', (data) => {
-      socket?.emit('call user', {
-        userToCall: getConversationId(
-          user as User,
-          activeConversation?.users as User[]
-        ),
-        signal: data,
-        from: call.socketId,
-        name: user?.name,
-        picture: user?.picture
+        myVideo.current!.srcObject = stream
+        setCall((prev) => ({
+          ...prev,
+          name: getConversationName(
+            user as User,
+            activeConversation?.users as User[]
+          ),
+          picture: getConversationPicture(
+            user as User,
+            activeConversation?.users as User[]
+          )
+        }))
+        const peer = new Peer({
+          initiator: true,
+          trickle: false,
+          stream: stream as MediaStream
+        })
+    
+        peer.on('signal', (data) => {
+          socket?.emit('call user', {
+            userToCall: getConversationId(
+              user as User,
+              activeConversation?.users as User[]
+            ),
+            signal: data,
+            from: call.socketId,
+            name: user?.name,
+            picture: user?.picture
+          })
+        })
+        peer.on('stream', (stream) => {
+          set(userVideo, 'current.srcObject', stream)
+        })
+        socket?.on('call accepted', (signal) => {
+          setCallAccepted(true)
+          peer.signal(signal)
+        })
+        connectionRef.current = peer
       })
-    })
-    peer.on('stream', (stream) => {
-      set(userVideo, 'current.srcObject', stream)
-    })
-    socket?.on('call accepted', (signal) => {
-      setCallAccepted(true)
-      peer.signal(signal)
-    })
-    connectionRef.current = peer
+
   }
 
   const answerCall = () => {
-    
-    enableMedia()
+    setShow(true)
     setCallAccepted(true)
 
-    const peer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream: stream as MediaStream
-    })
-
-    peer.on('signal', (data) => {
-      socket?.emit('answer call', {
-        signal: data,
-        to: call.socketId
+    navigator?.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream)
+        myVideo.current!.srcObject = stream
+        const peer = new Peer({
+          initiator: false,
+          trickle: false,
+          stream: stream as MediaStream
+        })
+        peer.on('signal', (data) => {
+          socket?.emit('answer call', {
+            signal: data,
+            to: call.socketId
+          })
+        })
+        peer.on('stream', (stream) => {
+          set(userVideo, 'current.srcObject', stream)
+        })
+    
+        peer.signal(call.signal)
+    
+        connectionRef.current = peer
       })
-    })
-    peer.on('stream', (stream) => {
-      set(userVideo, 'current.srcObject', stream)
-    })
-
-    peer.signal(call.signal)
-
-    connectionRef.current = peer
-  }
-
-  const enableMedia = () => {
-    console.log('stream ', stream)
-    myVideo.current!.srcObject = stream
-    setShow(true)
   }
 
   const endCall = () => {
-    setShow(false)
-
-    if (myVideo.current) myVideo.current.srcObject = null
-
-    setCall((prev) => ({
-      ...prev,
-      callEnded: true,
-      receivingCall: false
-    }))
-
     socket?.emit('end call', call.socketId)
 
-    connectionRef?.current?.destroy()
+    setShow(false)
+    setCall((prev) => ({ ...callData, socketId: prev.socketId }))
+    set(myVideo, 'current.srcObject', null)
   }
 
   return (
@@ -218,7 +204,8 @@ export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
         call,
         callAccepted,
         stream,
-        myVideo
+        myVideo,
+        userVideo
       }}
     >
       {children}

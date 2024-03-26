@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/app_error'
+import createHttpError from 'http-errors'
 import { injectable, inject } from 'tsyringe'
 import { type IConversationFindResult } from '../domain/model/IConversationFindResult'
 import { IConversationRepository } from '../domain/repositories/IConversationRepository'
@@ -22,7 +22,7 @@ class PopulateConversationService {
     )
 
     if (!conversation) {
-      throw new AppError('Conversation not found', 404)
+      throw new createHttpError[404]('Conversation not found')
     }
 
     return conversation

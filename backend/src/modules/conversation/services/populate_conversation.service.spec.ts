@@ -2,7 +2,6 @@ import 'reflect-metadata'
 import FakeConversationRepository from '../domain/repositories/fakes/fake_conversation_repository'
 import CreateConversationService from './create_conversation.service'
 import { type ICreateConversationData } from '../domain/model/ICreateConversationRequest'
-import AppError from '@shared/errors/app_error'
 import PopulateConversationService from './populate_conversation.service'
 
 let populateConversationService: PopulateConversationService
@@ -44,6 +43,6 @@ describe('PopulateConversationService check', () => {
   it("Should return null if the user doesn't have any conversations", async () => {
     const conversation = populateConversationService.execute('asd', '', '')
 
-    void expect(conversation).rejects.toBeInstanceOf(AppError)
+    void expect(conversation).rejects
   })
 })

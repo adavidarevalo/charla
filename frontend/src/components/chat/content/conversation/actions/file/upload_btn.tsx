@@ -36,7 +36,7 @@ export default function UploadBtn() {
       {({ onClick }) => (
         <Button
           onClick={onClick}
-          color={'#454686'}
+          color={'purple.800'}
           variant="outline"
           _hover={{ bg: 'none' }}
           border={'transparent'}

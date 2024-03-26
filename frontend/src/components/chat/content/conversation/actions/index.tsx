@@ -17,7 +17,7 @@ export default function ConversationActions() {
         position={'relative'}
         p={"15px"}
       >
-        <Flex maxW={'80%'} w={'full'} h={'full'} bg={"#EEEEF8"} align={"center"} rounded={"15px"}>
+        <Flex maxW={'80%'} w={'full'} h={'full'} bg={"purple.50"} align={"center"} rounded={"15px"}>
           <EmojiBtn/>
           <InputMessage />
           <UploadBtn />

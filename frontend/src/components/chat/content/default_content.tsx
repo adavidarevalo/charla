@@ -8,7 +8,7 @@ export default function DefaultContent() {
       <Flex w={'full'} justify={'center'} h={'full'} align={'center'}>
         <Flex direction={'column'}>
           <Lottie animationData={defaultChatAnimation} loop={true} />
-          <Text fontSize={'4xl'} color={'#464646'}>
+          <Text fontSize={'4xl'} color={'black.800'}>
             Please Select a conversation... 😀
           </Text>
         </Flex>

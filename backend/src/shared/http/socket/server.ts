@@ -6,6 +6,11 @@ let onlineUsers: Array<{
   socketId: string
 }> = []
 
+let usersInCall: Array<{
+  from: string
+  to: string
+}> = []
+
 interface IAnswerCall {
   to: string
   signal: string
@@ -24,7 +29,7 @@ export default (
       })
     }
     io.emit('get online users', onlineUsers)
-    io.emit('setup socket', socket.id)
+    io.to(socket.id).emit('setup socket', socket.id)
   })
 
   socket.on('disconnect', () => {
@@ -57,9 +62,12 @@ export default (
   socket.on('call user', (callData) => {
     const userId = callData.userToCall
     const userSocketId = onlineUsers.find((user) => user.userId === userId)
-    console.log('🚀 ~ socket.on ~ userSocketId:', userSocketId)
 
     if (userSocketId) {
+      usersInCall.push({
+        from: callData.from,
+        to: userSocketId.socketId
+      })
       io.to(userSocketId.socketId).emit('call user', {
         signal: callData.signal,
         from: callData.from,
@@ -74,6 +82,17 @@ export default (
   })
 
   socket.on('end call', (socketId: string) => {
-    io.to(socketId).emit('end call')
+    const conversation = usersInCall.find(
+      (call) => call.to === socketId || call.from === socketId
+    )
+
+    const getSocketId =
+      conversation?.from === socketId ? conversation?.to : conversation?.from
+
+    io.to(getSocketId ?? socketId).emit('end call')
+
+    usersInCall = usersInCall.filter(
+      (call) => call.to !== socketId && call.from !== socketId
+    )
   })
 }

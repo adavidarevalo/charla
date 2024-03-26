@@ -8,7 +8,7 @@ export default function SendMessageBtn() {
   return (
     <Button
       bg={'none'}
-      color={'#454686'}
+      color={'purple.800'}
       h={'50px'}
       onClick={handleSendMessage}
       isLoading={isLoading}

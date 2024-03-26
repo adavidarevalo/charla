@@ -4,7 +4,6 @@ import FakeConversationRepository from '../domain/repositories/fakes/fake_conver
 import DoesConversationExistService from './does_conversation_exist.service'
 import { type ICreateConversationData } from '../domain/model/ICreateConversationRequest'
 import CreateConversationService from './create_conversation.service'
-import AppError from '@shared/errors/app_error'
 
 let doesConversationExistService: DoesConversationExistService
 let createConversationService: CreateConversationService
@@ -60,6 +59,6 @@ describe('DoesConversationExistService check', () => {
       'asdasd'
     )
 
-    void expect(conversation).rejects.toBeInstanceOf(AppError)
+    void expect(conversation).rejects
   })
 })

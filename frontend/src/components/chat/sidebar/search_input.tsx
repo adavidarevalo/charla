@@ -29,12 +29,12 @@ export default function SearchInput() {
       >
         <InputGroup
           size="lg"
-          bg={'#DBDCFF'}
+          bg={'purple.50'}
           rounded={'15px'}
           paddingInline={'10px'}
         >
           <InputLeftElement pointerEvents="none">
-            <FaMagnifyingGlass color="#3A3A37" />
+            <FaMagnifyingGlass color="black.300" />
           </InputLeftElement>
           <Input
             type="text"

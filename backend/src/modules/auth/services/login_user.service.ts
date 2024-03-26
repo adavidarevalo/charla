@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/app_error'
+import createHttpError from 'http-errors'
 import { inject, injectable } from 'tsyringe'
 import authRepository from '@modules/auth/infra/mongoose/repositories/auth.repository'
 import { IHashProvider } from '../providers/hashProvider/model/IHashProvider'
@@ -23,7 +23,7 @@ class LoginUserService {
     const user = await this.AuthRepository.findByEmail(email)
 
     if (!user) {
-      throw new AppError('Invalid credentials', 400)
+      throw createHttpError[400]('Invalid credentials')
     }
 
     const passwordMatches = await this.hashProvider.compareHash(
@@ -32,7 +32,7 @@ class LoginUserService {
     )
 
     if (!passwordMatches) {
-      throw new AppError('Invalid credentials', 400)
+      throw createHttpError[400]('Invalid credentials')
     }
 
     return {

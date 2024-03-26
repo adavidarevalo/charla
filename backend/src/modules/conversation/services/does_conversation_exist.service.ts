@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/app_error'
+import createHttpError from 'http-errors'
 import { injectable, inject } from 'tsyringe'
 import { type IConversationFindResult } from '../domain/model/IConversationFindResult'
 import { IConversationRepository } from '../domain/repositories/IConversationRepository'
@@ -32,7 +32,7 @@ class DoesConversationExistService {
         await this.ConversationRepository.findConversationById(groupId)
 
       if (!conversation) {
-        throw new AppError('Cannot find conversation', 400)
+        throw new createHttpError[400]('Cannot find conversation')
       }
 
       conversation =

@@ -19,7 +19,7 @@ export default function TypingMessage({ messagesRef }: TypingMessage) {
   return (
     <Flex justify={'start'}>
       <Box
-        bg={'#EEEEF8'}
+        bg={'purple.200'}
         color={'#1C1C1C'}
         w={'fit-content'}
         maxW={'40%'}
@@ -30,8 +30,13 @@ export default function TypingMessage({ messagesRef }: TypingMessage) {
         fontSize={'20px'}
         position={'relative'}
       >
-        <Box position={'absolute'} top={'-3px'} left={'-18px'}>
-          <TbTriangleInvertedFilled size={30} color="#EEEEF8" />
+        <Box
+          position={'absolute'}
+          top={'-4px'}
+          left={'-11px'}
+          color="purple.200"
+        >
+          <TbTriangleInvertedFilled size={30} />
         </Box>
 
         <Flex w={'full'} justify={'center'} align={'center'} h={'full'}>

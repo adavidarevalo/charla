@@ -58,7 +58,7 @@ const Bytescale = ({
               onClick={onClick}
               cursor={'pointer'}
               name={avatarUrl && avatarName}
-              bg={'#4489FF'}
+              bg={'purple.800'}
               src={avatarUrl}
             />
           </Box>

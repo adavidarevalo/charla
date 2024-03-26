@@ -31,7 +31,6 @@ export default function HeaderConversation() {
         align={'center'}
         paddingInline={'20px'}
         justify={'space-between'}
-        borderBottom={'2px solid #eaeff6'}
       >
         <Flex align={'center'}>
           <Avatar
@@ -46,21 +45,31 @@ export default function HeaderConversation() {
             name={activeConversation?.name}
           />
           <Box ml={'10px'}>
-            <Text as={'b'} fontSize={'23px'} color={'#464646'} m={0}>
+            <Text as={'b'} fontSize={'23px'} color={'black.900'} m={0}>
               {capitalize(activeConversation?.name)}
             </Text>
-            {insOnline && <Text color={'green'}>Online</Text>}
+            {insOnline && <Text color={'green.500'}>Online</Text>}
           </Box>
         </Flex>
         <Flex
-          color={'#8C9195'}
+          color={'black.900'}
           w={'100%'}
           maxW={'120px'}
           justify={'space-between'}
         >
-          <CiVideoOn size={30} cursor={'pointer'} onClick={callUser} />
-          <CiPhone size={30} cursor={'pointer'} />
-          <CiMenuKebab size={30} cursor={'pointer'} />
+          <Box
+            _hover={{ color: 'purple.800' }}
+            cursor={'pointer'}
+            onClick={callUser}
+          >
+            <CiVideoOn size={30} />
+          </Box>
+          <Box _hover={{ color: 'purple.800' }} cursor={'pointer'}>
+            <CiPhone size={30} />
+          </Box>
+          <Box _hover={{ color: 'purple.800' }} cursor={'pointer'}>
+            <CiMenuKebab size={30} />
+          </Box>
         </Flex>
       </Flex>
       <Divider orientation="horizontal" />

@@ -16,7 +16,7 @@ export default function ChatPage() {
               w={'full'}
               templateRows="repeat(1, 1fr)"
               templateColumns="repeat(4, 1fr)"
-              bg={'#F9FAFC'}
+              bg={'white'}
               rounded={'20px'}
             >
               <GridItem colSpan={1}>

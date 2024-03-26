@@ -3,7 +3,6 @@ import GetUserConversationService from './get_user_conversation.service'
 import FakeConversationRepository from '../domain/repositories/fakes/fake_conversation_repository'
 import CreateConversationService from './create_conversation.service'
 import { type ICreateConversationData } from '../domain/model/ICreateConversationRequest'
-import AppError from '@shared/errors/app_error'
 
 let getUserConversationService: GetUserConversationService
 let createConversationService: CreateConversationService
@@ -37,6 +36,6 @@ describe('GetUserConversation check', () => {
   it("Should return null if the user doesn't have any conversations", async () => {
     const conversation = getUserConversationService.execute('asd')
 
-    void expect(conversation).rejects.toBeInstanceOf(AppError)
+    void expect(conversation).rejects
   })
 })

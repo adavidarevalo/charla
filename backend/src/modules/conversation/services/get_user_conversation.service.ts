@@ -1,5 +1,5 @@
-import AppError from '@shared/errors/app_error'
 import { injectable, inject } from 'tsyringe'
+import createHttpError from 'http-errors'
 
 import { IConversationRepository } from '../domain/repositories/IConversationRepository'
 import { type IConversationFindResult } from '../domain/model/IConversationFindResult'
@@ -18,7 +18,7 @@ class GetUserConversationService {
       await this.ConversationRepository.getConversationByUserId(userId)
 
     if (!conversations) {
-      throw new AppError('Cannot create conversation', 400)
+      throw new createHttpError[400]('Cannot create conversation')
     }
 
     return conversations

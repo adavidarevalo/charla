@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe'
+import createHttpError from 'http-errors'
 import { IMessageRepository } from '../domain/repositories/IMessageRepository'
 import { type ICreateMessage } from '../domain/model/ICreateMessage'
-import AppError from '@shared/errors/app_error'
 import { type IMessage } from '../domain/model/IMessage'
 
 @injectable()
@@ -15,7 +15,7 @@ class CreateMessageService {
     const newMessage = await this.MessageRepository.createMessage(message)
 
     if (!newMessage) {
-      throw new AppError('Message not created!', 404)
+      throw new createHttpError.NotFound('Message not created!')
     }
 
     return newMessage

@@ -14,8 +14,8 @@ export default function Message({ message, isMe }: MessageProps) {
   return (
     <Flex justify={isMe ? 'end' : 'start'}>
       <Box
-        bg={isMe ? '#7578ED' : '#EEEEF8'}
-        color={isMe ? '#FCFCFE' : '#1C1C1C'}
+        bg={isMe ? 'purple.600' : 'purple.200'}
+        color={isMe ? 'white' : 'black.900'}
         w={'fit-content'}
         maxW={'40%'}
         minW={'200px'}
@@ -26,18 +26,23 @@ export default function Message({ message, isMe }: MessageProps) {
         position={'relative'}
       >
         {isMe === false && (
-          <Box position={'absolute'} top={'-3px'} left={'-18px'}>
-            <TbTriangleInvertedFilled size={30} color="#EEEEF8" />
+          <Box
+            position={'absolute'}
+            top={'-4px'}
+            left={'-11px'}
+            color="purple.200"
+          >
+            <TbTriangleInvertedFilled size={30} />
           </Box>
         )}
-        {message.message && <Text fontSize={'21px'}>{message.message}</Text>}
+        {message.message && <Text fontSize={'21px'} fontWeight={400}>{message.message}</Text>}
         {message.files.map((file) => (
           <FileView file={file} key={file.fileUrl} />
         ))}
         <Text
           textAlign={'end'}
           fontSize={'15px'}
-          color={isMe ? '#FAFAFE' : '#918f90'}
+          color={isMe ? 'white' : 'black.500'}
         >
           {moment(message.createdAt).format('HH:mm')}
         </Text>
