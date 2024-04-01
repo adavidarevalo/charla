@@ -35,6 +35,21 @@ export default (
   socket.on('disconnect', () => {
     onlineUsers = onlineUsers.filter(({ socketId }) => socketId !== socket.id)
     io.emit('get online users', onlineUsers)
+
+    const conversation = usersInCall.find(
+      (call) => call.to === socket.id || call.from === socket.id
+    )
+
+    if (conversation) {
+      const getSocketId =
+        conversation?.from === socket.id ? conversation?.to : conversation?.from
+
+      io.to(getSocketId ?? socket.id).emit('end call')
+
+      usersInCall = usersInCall.filter(
+        (call) => call.to !== socket.id && call.from !== socket.id
+      )
+    }
   })
 
   socket.on('join conversation', async (conversationId: string) => {
@@ -78,7 +93,14 @@ export default (
   })
 
   socket.on('answer call', (data: IAnswerCall) => {
-    io.to(data.to).emit('call accepted', data.signal)
+    const conversation = usersInCall.find(
+      (call) => call.to === data.to || call.from === data.to
+    )
+
+    const getSocketId =
+      conversation?.from === data.to ? conversation?.to : conversation?.from
+
+    io.to(getSocketId ?? data.to).emit('call accepted', data.signal)
   })
 
   socket.on('end call', (socketId: string) => {

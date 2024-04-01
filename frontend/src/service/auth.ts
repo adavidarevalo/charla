@@ -1,21 +1,24 @@
-import { AxiosInstance } from 'axios'
 import { RegisterValues } from '../components/sign_up/form'
-import getAxiosInstances from '../utils/axios_instance'
+import HttpService, { IHttpInstance } from '../utils/axios_instance'
 
 class AuthServices {
-  private axiosInstance: AxiosInstance
+  private axiosInstance: IHttpInstance
   constructor() {
-    this.axiosInstance = getAxiosInstances('auth')
+    this.axiosInstance = new HttpService('auth')
   }
 
   async registerUser(user: Omit<RegisterValues, 'repeat_password'>) {
-    const result = await this.axiosInstance.post('/register', user)
+    const result = await this.axiosInstance.http.post('/register', user)
     return result.data
   }
 
   async loginUser(values: { email: string; password: string }) {
-    const result = await this.axiosInstance.post('/login', values)
+    const result = await this.axiosInstance.http.post('/login', values)
     return result.data
+  }
+
+  async logoutUser() {
+    await this.axiosInstance.http.post('/logout')
   }
 }
 

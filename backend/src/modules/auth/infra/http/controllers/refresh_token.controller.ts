@@ -3,6 +3,7 @@ import FindByIdUserService from '@services/find_user.service'
 import { type NextFunction, type Request, type Response } from 'express'
 import { container, inject, injectable } from 'tsyringe'
 import createHttpError from 'http-errors'
+import get from 'lodash/get'
 
 @injectable()
 class RefreshTokenController {
@@ -29,7 +30,9 @@ class RefreshTokenController {
 
       const findByIdUserService = container.resolve(FindByIdUserService)
 
-      const user = await findByIdUserService.execute(`${check?.id}`)
+      const user = await findByIdUserService.execute(
+        `${get(check, 'userId', '')}`
+      )
 
       const accessToken = this.JWTProvider.generateToken({
         userId: user?._id ?? '',
@@ -43,9 +46,10 @@ class RefreshTokenController {
       })
 
       response.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        path: '/api/v1/auth/refreshtoken',
-        maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: false,
+        secure: true,
+        sameSite: 'none'
       })
 
       return response.status(200).json({
@@ -55,8 +59,7 @@ class RefreshTokenController {
           picture: user?.picture,
           status: user?.status,
           _id: user?._id,
-          token: accessToken,
-          refreshToken
+          token: accessToken
         }
       })
     } catch (error) {

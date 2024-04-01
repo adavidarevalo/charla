@@ -4,8 +4,7 @@ import { MdDownloading } from 'react-icons/md'
 import { bytesToMB } from '../utils'
 import { FileIcon } from 'react-file-icon'
 import truncate from 'lodash.truncate'
-import { PhotoProvider, PhotoView } from 'react-photo-view'
-import 'react-photo-view/dist/react-photo-view.css'
+import { PhotoView } from 'react-photo-view'
 
 interface FileViewProp {
   file: File
@@ -22,11 +21,9 @@ export default function FileView({file}: FileViewProp) {
   return (
     <Flex mt={'5px'} justify={'space-between'}>
       {isImage ? (
-        <PhotoProvider>
           <PhotoView src={fileUrl}>
-            <Image src={fileUrl} alt={fileName} rounded={"10px"} h={"500px"}/>
+            <Image cursor={"pointer"} src={fileUrl} alt={fileName} rounded={"10px"} h={"500px"}/>
           </PhotoView>
-        </PhotoProvider>
       ) : (
         <Flex>
           <Flex w={'80px'}>

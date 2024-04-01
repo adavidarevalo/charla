@@ -1,14 +1,13 @@
-import { AxiosInstance } from 'axios'
-import getAxiosInstances from '../utils/axios_instance'
+import HttpService, { IHttpInstance } from '../utils/axios_instance'
 
 class UserServices {
-  private axiosInstance: AxiosInstance
+  private axiosInstance: IHttpInstance
   constructor() {
-    this.axiosInstance = getAxiosInstances('user')
+    this.axiosInstance = new HttpService('user')
   }
 
   async searchUser(queryString: string, token: string) {
-    const result = await this.axiosInstance.get('', {
+    const result = await this.axiosInstance.http.get('', {
       params: { search: queryString },
       headers: {
         Authorization: `Bearer ${token}`

@@ -41,12 +41,12 @@ app.use(helmet())
 
 app.use(trimRequest.all)
 
-app.use(cors())
+app.use(cors({ credentials: true, origin: true }))
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(mongoSanitize())
 app.use(compression())
-app.use(cookieParser())
 app.use(
   fileUpload({
     useTempFiles: true

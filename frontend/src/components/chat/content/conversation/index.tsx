@@ -6,6 +6,8 @@ import { AppDispatch, AppState } from '../../../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from "react";
 import { getConversationMessages } from '../../../../redux/actions/chat.actions';
+import { PhotoProvider } from "react-photo-view";
+import 'react-photo-view/dist/react-photo-view.css'
 
 
 export default function Conversation() {
@@ -30,15 +32,17 @@ export default function Conversation() {
 
   return (
     <>
-      <GridItem rowSpan={0} colSpan={1}>
-        <HeaderConversation/>
-      </GridItem>
-      <GridItem rowSpan={8} colSpan={1}>
-        <ChatContent/>
-      </GridItem>
-      <GridItem rowSpan={1} colSpan={1}>
-        <ConversationActions/>
-      </GridItem>
+      <PhotoProvider>
+        <GridItem rowSpan={0} colSpan={1}>
+          <HeaderConversation />
+        </GridItem>
+        <GridItem rowSpan={8} colSpan={1}>
+          <ChatContent />
+        </GridItem>
+        <GridItem rowSpan={1} colSpan={1}>
+          <ConversationActions />
+        </GridItem>
+      </PhotoProvider>
     </>
   )
 }

@@ -6,7 +6,9 @@ class LogoutTokenController {
     response: Response
   ): Promise<Response<any, Record<string, any>>> {
     response.clearCookie('refreshToken', {
-      path: '/api/v1/auth/refreshtoken'
+      httpOnly: false,
+      secure: true,
+      sameSite: 'none'
     })
 
     return response.status(204).send()

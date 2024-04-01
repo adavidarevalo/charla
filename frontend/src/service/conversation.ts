@@ -1,14 +1,13 @@
-import { AxiosInstance } from 'axios'
-import getAxiosInstances from '../utils/axios_instance'
+import HttpService, { IHttpInstance } from '../utils/axios_instance'
 
 class ConversationServices {
-  private axiosInstance: AxiosInstance
+  private axiosInstance: IHttpInstance
   constructor() {
-    this.axiosInstance = getAxiosInstances('conversation')
+    this.axiosInstance = new HttpService('conversation')
   }
 
   async getConversations(token: string) {
-    const result = await this.axiosInstance.get('/', {
+    const result = await this.axiosInstance.http.get('/', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -17,7 +16,7 @@ class ConversationServices {
   }
 
   async createConversation(receiver_id: string, token: string) {
-    const result = await this.axiosInstance.post(
+    const result = await this.axiosInstance.http.post(
       '/',
       { receiverId: receiver_id },
       {

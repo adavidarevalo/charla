@@ -11,7 +11,6 @@ export interface IInitialState {
     picture: string
     status: string
     token: string
-    refreshToken: string
   }
 }
 
@@ -24,8 +23,7 @@ export const initialState: IInitialState = {
     email: '',
     picture: '',
     status: '',
-    token: '',
-    refreshToken: ''
+    token: ''
   }
 }
 
@@ -34,13 +32,16 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state = initialState
+      state.user = initialState.user
       state.status = ''
       state.message = ''
+    },
+    changeStatus: (state, actions) => {
+      state.status = actions.payload
+    },
+    updateState: (state, actions) => {
+      state = { ...state, ...actions.payload }
     }
-    // changeStatus: (state, actions) => {
-    //   state.status = actions.payload
-    // }
   },
   extraReducers: (builder) => {
     builder
@@ -74,6 +75,6 @@ export const userSlice = createSlice({
   }
 })
 
-export const { logout } = userSlice.actions
+export const { logout, updateState } = userSlice.actions
 
 export default userSlice.reducer

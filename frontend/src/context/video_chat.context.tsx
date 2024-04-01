@@ -84,29 +84,37 @@ export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
       }))
     })
     socket?.on('call user', (data) => {
-    setCall((prev) => ({
+      setCall((prev) => ({
         ...prev,
-        socketId: data.from,
+        // socketId: data.from,
         name: data.name,
         picture: data.picture,
         signal: data.signal,
         receivingCall: true
-      }));
+      }))
     })
-    socket?.on('end call', () => {      
-      setShow(false)
-      setCall((prev) => ({ ...callData, socketId: prev.socketId }))
-      set(myVideo, 'current.srcObject', null)
+    socket?.on('end call', () => {
+       if (stream) {
+         stream.getTracks().forEach((track) => {
+           track.stop()
+         })
+       }
+
+       (myVideo.current!.srcObject as MediaStream)
+         .getTracks()
+         .forEach((track) => {
+           track.stop()
+         })
+  
+       setStream(null)
+
+       setShow(false)
+       setCall((prev) => ({ ...callData, socketId: prev.socketId }))
+       set(userVideo, 'current', null)
+       set(myVideo, 'current', null)
+       setCallAccepted(false)
     })
   }, [socket])
-  
-  
-  useEffect(() => {
-    if (call.name === "" && !call.receivingCall && !call.isCallAccepted) {
-      stream?.getTracks().forEach((track) => track.stop())      
-    }
- 
-  }, [call])
 
   const callUser = () => {
     setShow(true)
@@ -131,7 +139,7 @@ export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
           trickle: false,
           stream: stream as MediaStream
         })
-    
+
         peer.on('signal', (data) => {
           socket?.emit('call user', {
             userToCall: getConversationId(
@@ -153,7 +161,6 @@ export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
         })
         connectionRef.current = peer
       })
-
   }
 
   const answerCall = () => {
@@ -179,19 +186,26 @@ export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
         peer.on('stream', (stream) => {
           set(userVideo, 'current.srcObject', stream)
         })
-    
+
         peer.signal(call.signal)
-    
+
         connectionRef.current = peer
       })
   }
 
   const endCall = () => {
     socket?.emit('end call', call.socketId)
+    if (stream) {
+      stream.getTracks().forEach((track) => {
+        track.stop()
+      })
+    }
+    setStream(null)
 
     setShow(false)
     setCall((prev) => ({ ...callData, socketId: prev.socketId }))
-    set(myVideo, 'current.srcObject', null)
+    set(userVideo, 'current', null)
+    setCallAccepted(false)
   }
 
   return (
@@ -213,3 +227,7 @@ export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
   )
 }
 export const useVideoChat = () => useContext(VideoChatContext)
+function get(current: HTMLVideoElement | null, arg1: string) {
+  throw new Error('Function not implemented.')
+}
+

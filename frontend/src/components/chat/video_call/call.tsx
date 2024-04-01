@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, IconButton, Text } from '@chakra-ui/react'
+import { Avatar, Box, Flex, Grid, GridItem, IconButton, Text } from '@chakra-ui/react'
 import { useEffect, useMemo, useState } from 'react'
 import { AiFillAudio, AiFillSound } from 'react-icons/ai'
 import { ImPhoneHangUp } from 'react-icons/im'
@@ -13,26 +13,27 @@ export default function Call() {
   const { myVideo, call, endCall, show, callAccepted, userVideo } =
     useVideoChat()
   const [hover, setHover] = useState(false)
-  const audio = useMemo(() => new Audio('/audio/ringing.mp3'), [])
+  // const audio = useMemo(() => new Audio('/audio/ringing.mp3'), [])
+
+  const toggleMic = () => {
+  }
+
+  const toggleVideo = () => {}
 
   const callOption = [
     {
       bg: 'purple.500',
       color: '#FCFCFE',
-      icon: <AiFillSound />,
-      'aria-label': 'sound'
-    },
-    {
-      bg: 'purple.500',
-      color: '#FCFCFE',
       icon: <IoVideocam />,
-      'aria-label': 'Video'
+      'aria-label': 'Video',
+      onClick: toggleVideo
     },
     {
       bg: 'purple.500',
       color: '#FCFCFE',
       icon: <AiFillAudio />,
-      'aria-label': 'Microphone'
+      'aria-label': 'Microphone',
+      onClick: toggleMic
     },
     {
       bg: 'red',
@@ -43,15 +44,16 @@ export default function Call() {
     }
   ]
 
-  const isCalling = useMemo(
-    () => Boolean((show || call?.signal) && !call?.callEnded),
-    [show, call]
-  )
+  // const isCalling = useMemo(
+  //   () => Boolean((show || call?.signal) && !call?.callEnded),
+  //   [show, call]
+  // )
 
-  useEffect(() => {
-    isCalling && audio.play()
-    isCalling === false && audio.pause()
-  }, [isCalling])
+  // useEffect(() => {
+  //   console.log('isCalling ', isCalling)
+  //   isCalling && audio.play()
+  //   isCalling === false && audio.pause()
+  // }, [isCalling])
 
   return (
     <Box
@@ -64,21 +66,28 @@ export default function Call() {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <Flex
-        bg={'red'}
+      <Grid
+        templateColumns="repeat(3, 1fr)"
         position={'absolute'}
         zIndex={100}
         w={'full'}
-        justify={'space-between'}
+        p={'10px'}
       >
-        <Box>
-          <Stopwatch />
-        </Box>
-        <Text as={'b'} fontSize={'23px'}>
-          {call?.name}
-        </Text>
-        <Box></Box>
-      </Flex>
+        <GridItem w="100%" h="10">
+          {callAccepted && <Stopwatch />}
+        </GridItem>
+        <GridItem w="100%" h="10">
+          <Text
+            fontSize={'23px'}
+            textAlign={'center'}
+            w={'center'}
+            fontWeight={600}
+          >
+            {call?.name}
+          </Text>
+        </GridItem>
+        <GridItem w="100%" h="10" />
+      </Grid>
       <Flex
         w={'full'}
         h={'full'}
@@ -150,7 +159,7 @@ export default function Call() {
           justify={'center'}
           align={'center'}
         >
-          <Flex w={'60%'} maxW={'200px'} justify={'space-between'}>
+          <Flex w={'60%'} maxW={'150px'} justify={'space-between'}>
             {callOption.map((option) => (
               <IconButton
                 key={option['aria-label']}

@@ -34,7 +34,6 @@ export default function VideoCallLayoutDrag({ children }: VideoCallDragProps) {
               position: 'absolute',
               top: '50px',
               left: '50%',
-              background: '#e1e8fe',
               padding: '5px',
               borderRadius: '20px',
               visibility:
@@ -52,7 +51,7 @@ export default function VideoCallLayoutDrag({ children }: VideoCallDragProps) {
             maxHeight={'100vh'}
           >
             <section style={{ width: '100%', height: '100%' }}>
-              <Call />
+              {show && <Call />}
             </section>
           </Resizable>
         )}

@@ -34,9 +34,10 @@ class LoginUserController {
       })
 
       response.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        path: '/api/v1/auth/refreshtoken',
-        maxAge: 30 * 24 * 60 * 60 * 1000
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: false,
+        secure: true,
+        sameSite: 'none'
       })
 
       return response.json({
@@ -47,8 +48,7 @@ class LoginUserController {
           picture: user?.picture,
           status: user?.status,
           _id: user?._id,
-          token: accessToken,
-          refreshToken
+          token: accessToken
         }
       })
     } catch (error) {

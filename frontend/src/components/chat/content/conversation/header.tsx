@@ -2,12 +2,13 @@ import { Avatar, Box, Divider, Flex, Text } from '@chakra-ui/react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../../../../redux/store'
 import { getConversationPicture } from '../../utils'
-import { User } from '../../../../types/user.type';
-import capitalize from 'lodash.capitalize';
-import { CiMenuKebab, CiPhone, CiVideoOn } from 'react-icons/ci';
-import { useMemo } from 'react';
-import { getConversationId } from '../../sidebar/preview_result_content/utils';
-import { useVideoChat } from '../../../../context/video_chat.context';
+import { User } from '../../../../types/user.type'
+import capitalize from 'lodash.capitalize'
+import { CiMenuKebab, CiPhone, CiVideoOn } from 'react-icons/ci'
+import { useMemo } from 'react'
+import { getConversationId } from '../../sidebar/preview_result_content/utils'
+import { useVideoChat } from '../../../../context/video_chat.context'
+import { PhotoView } from 'react-photo-view'
 
 export default function HeaderConversation() {
   const { activeConversation, onlineUsers } = useSelector(
@@ -15,14 +16,22 @@ export default function HeaderConversation() {
   )
   const { user } = useSelector((state: AppState) => state.user)
   const { callUser } = useVideoChat()
-    
+
   const insOnline = useMemo(() => {
-      return onlineUsers.some(
-        ({ userId }) =>
-          userId ===
-          getConversationId(user as User, activeConversation?.users as User[])
-      )
-    }, [activeConversation, onlineUsers])
+    return onlineUsers.some(
+      ({ userId }) =>
+        userId ===
+        getConversationId(user as User, activeConversation?.users as User[])
+    )
+  }, [activeConversation, onlineUsers])
+
+  const avatarSrc = useMemo(
+    () =>
+      activeConversation?.isGroup
+        ? activeConversation.picture
+        : getConversationPicture(user, activeConversation?.users as User[]),
+    [activeConversation]
+  )
 
   return (
     <>
@@ -33,17 +42,13 @@ export default function HeaderConversation() {
         justify={'space-between'}
       >
         <Flex align={'center'}>
-          <Avatar
-            src={
-              activeConversation?.isGroup
-                ? activeConversation.picture
-                : getConversationPicture(
-                    user,
-                    activeConversation?.users as User[]
-                  )
-            }
-            name={activeConversation?.name}
-          />
+            <PhotoView src={avatarSrc}>
+              <Avatar
+                cursor={'pointer'}
+                src={avatarSrc}
+                name={activeConversation?.name}
+              />
+            </PhotoView>
           <Box ml={'10px'}>
             <Text as={'b'} fontSize={'23px'} color={'black.900'} m={0}>
               {capitalize(activeConversation?.name)}

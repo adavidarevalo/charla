@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { AppState } from '../../redux/store'
 import { useDispatch } from 'react-redux'
 import { logout } from './../../redux/slices/user.slice'
+import authServices from "./../../service/auth"
 
 interface MenuLayoutProps {
   children: ReactNode
@@ -14,6 +15,11 @@ interface MenuLayoutProps {
 export default function MenuLayout({ children }: MenuLayoutProps) {
   const dispatch = useDispatch()
   const { user } = useSelector((state: AppState) => state.user)
+
+  const handleLogOut = async () => {
+    await authServices.logoutUser()
+    dispatch(logout())
+  }
 
   return (
     <Flex bg={'black.950'} w={'full'} h={'100vh'}>
@@ -40,7 +46,7 @@ export default function MenuLayout({ children }: MenuLayoutProps) {
             align={'center'}
             p={'20px'}
             cursor={'pointer'}
-            onClick={() => dispatch(logout())}
+            onClick={handleLogOut}
           >
             <SlLogout size={'30px'} />
             <Text fontSize={'18px'} mt={'3px'}>
