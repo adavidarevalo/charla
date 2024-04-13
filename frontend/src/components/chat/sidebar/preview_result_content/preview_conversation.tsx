@@ -9,6 +9,7 @@ import { open_create_conversation } from '../../../../redux/actions/chat.actions
 import { ISearchedResult, useSidebarChat } from '../context'
 import { useSocket } from '../../../../context/socket.context'
 import { useMemo } from 'react'
+import get from 'lodash/get';
 
 interface PreviewResultProps {
   data: Conversation | ISearchedResult
@@ -74,7 +75,7 @@ export default function PreviewResult({ data }: PreviewResultProps) {
       {!isSearching && (
         <Box mr={'5px'}>
           <Text color={'black.400'} fontSize={'18px'}>
-            {dateHandler((data as Conversation).latestMessage.updatedAt)}
+            {dateHandler((data as Conversation).latestMessage?.updatedAt)}
           </Text>
         </Box>
       )}

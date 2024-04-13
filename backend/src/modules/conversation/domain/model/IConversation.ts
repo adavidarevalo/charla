@@ -1,4 +1,4 @@
-import { type IUser } from '@modules/auth/domain/models/IAuthUser'
+import { type IUser } from '@modules/user/domain/models/IUser'
 
 export interface IConversation {
   _id?: string
@@ -7,4 +7,5 @@ export interface IConversation {
   users: Array<string | IUser>
   latestMessage: string | any
   admin: string | IUser
+  picture?: string
 }

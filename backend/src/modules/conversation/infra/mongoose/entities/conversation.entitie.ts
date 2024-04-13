@@ -13,6 +13,11 @@ const conversationSchema = new mongoose.Schema<IConversation>(
       default: false,
       required: true
     },
+    picture: {
+      type: String,
+      default: '',
+      required: false
+    },
     users: [
       {
         type: mongoose.Schema.Types.ObjectId,

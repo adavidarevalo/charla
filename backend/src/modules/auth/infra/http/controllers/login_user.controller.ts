@@ -27,6 +27,7 @@ class LoginUserController {
         expiresIn: '1d',
         secret: process.env.ACCESS_TOKEN_SECRET ?? ''
       })
+
       const refreshToken = this.JWTProvider.generateToken({
         userId: user?._id ?? '',
         expiresIn: '30d',

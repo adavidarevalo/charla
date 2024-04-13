@@ -3,6 +3,7 @@ import axios from 'axios'
 import ConversationServices from '../../service/conversation'
 import MessageServices from './../../service/message'
 import { File } from './../../types/message.type'
+import { IGroup } from '../../types/create_group.type'
 
 export const getConversations = createAsyncThunk(
   'conversation/all',
@@ -82,14 +83,30 @@ export const sendMessage = createAsyncThunk(
     try {
       const { token, message, conversationId, files } = values
 
-      const neMessage = await MessageServices.sendMessage(
+      const newMessage = await MessageServices.sendMessage(
         message,
         conversationId,
         token,
         files
       )
 
-      return neMessage
+      return newMessage
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.error?.message)
+      }
+      throw error
+    }
+  }
+)
+
+export const createGroupConversation = createAsyncThunk(
+  'conversation/create_group',
+  async (values: IGroup, { rejectWithValue }) => {
+    try {
+      const group = await ConversationServices.createGroup(values)
+
+      return group
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return rejectWithValue(error.response?.data?.error?.message)

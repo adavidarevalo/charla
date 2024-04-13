@@ -46,6 +46,7 @@ class ConversationRepository implements IConversationRepository {
     const conversation = await (
       await ConversationModel.create(conversationData)
     ).save()
+    console.log('🚀 ~ ConversationRepository ~ conversation:', conversation)
 
     return conversation
   }

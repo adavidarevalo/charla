@@ -3,6 +3,7 @@ import { celebrate, Joi, Segments } from 'celebrate'
 import { authMiddleware } from '@shared/http/middleware/auth.middleware'
 import CreateOpenConversationController from '../controllers/create_open_conversation.controller'
 import GetConversationController from '../controllers/get_conversation.controller'
+import CreateGroupController from '../controllers/create_group'
 
 class ConversationRoutes {
   private readonly router: Router
@@ -17,6 +18,8 @@ class ConversationRoutes {
     const createOpenConversationController =
       new CreateOpenConversationController()
 
+    const createGroupController = new CreateGroupController()
+
     this.router.post(
       '/',
       celebrate({
@@ -29,6 +32,17 @@ class ConversationRoutes {
       createOpenConversationController.execute.bind(
         createOpenConversationController
       )
+    )
+    this.router.post(
+      '/group',
+      celebrate({
+        [Segments.BODY]: {
+          name: Joi.string().required(),
+          users: Joi.array().items(Joi.string()).required()
+        }
+      }),
+      authMiddleware,
+      createGroupController.execute.bind(createGroupController)
     )
     this.router.get(
       '/',

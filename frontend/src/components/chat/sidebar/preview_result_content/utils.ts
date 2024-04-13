@@ -50,6 +50,8 @@ export const getVariables = (
   isSearching: boolean,
   user: User
 ) => {
+  const isGroup = data.isGroup
+
   const receiver_id = isSearching
     ? data._id
     : getConversationId(user, (data as Conversation).users)
@@ -64,7 +66,7 @@ export const getVariables = (
 
   const subtitle = isSearching
     ? data.name
-    : (data as Conversation).latestMessage.message
+    : (data as Conversation).latestMessage?.message
 
   return {
     receiver_id,

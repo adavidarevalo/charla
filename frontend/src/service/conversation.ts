@@ -1,4 +1,5 @@
 import HttpService, { IHttpInstance } from '../utils/axios_instance'
+import { IGroup } from '../types/create_group.type'
 
 class ConversationServices {
   private axiosInstance: IHttpInstance
@@ -25,6 +26,21 @@ class ConversationServices {
         }
       }
     )
+    return result.data
+  }
+  async createGroup(values: IGroup) {
+    const { token, name, users } = values
+
+    const result = await this.axiosInstance.http.post(
+      `/group`,
+      { name, users },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
     return result.data
   }
 }

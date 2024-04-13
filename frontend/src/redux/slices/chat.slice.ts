@@ -29,6 +29,7 @@ export interface InitialState {
       name: string
     }
   }[]
+  isNewGroup: boolean
 }
 
 export const initialState: InitialState = {
@@ -39,7 +40,8 @@ export const initialState: InitialState = {
   messages: [],
   onlineUsers: [],
   conversationTyping: [],
-  files: []
+  files: [],
+  isNewGroup: false
 }
 
 export const chatSlice = createSlice({
@@ -48,6 +50,9 @@ export const chatSlice = createSlice({
   reducers: {
     setActiveConversation: (state, action) => {
       state.activeConversation = action.payload
+    },
+    setIsNewGroup: (state, action) => {
+      state.isNewGroup = action.payload
     },
     updateMessages: (state, action) => {
       if (!action.payload) return
@@ -173,7 +178,8 @@ export const {
   removeConversationTyping,
   addFiles,
   clearFiles,
-  removeFileByIndex
+  removeFileByIndex,
+  setIsNewGroup
 } = chatSlice.actions
 
 export default chatSlice.reducer

@@ -4,4 +4,5 @@ export interface ICreateConversationData {
   picture: string
   isGroup: boolean
   users: [string, string]
+  admin?: string
 }

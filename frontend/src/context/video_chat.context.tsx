@@ -227,7 +227,4 @@ export const VideoChatProvider: React.FC<{ children: ReactNode }> = ({
   )
 }
 export const useVideoChat = () => useContext(VideoChatContext)
-function get(current: HTMLVideoElement | null, arg1: string) {
-  throw new Error('Function not implemented.')
-}
 

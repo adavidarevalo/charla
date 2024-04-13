@@ -5,8 +5,10 @@ import Logo from './../../../public/logo.png'
 import { useSelector } from 'react-redux'
 import { AppState } from '../../redux/store'
 import { useDispatch } from 'react-redux'
-import { logout } from './../../redux/slices/user.slice'
-import authServices from "./../../service/auth"
+import { logout } from '../../redux/slices/user.slice'
+import {  setIsNewGroup } from '../../redux/slices/chat.slice'
+import authServices from "../../service/auth"
+import { MdGroups } from 'react-icons/md'
 
 interface MenuLayoutProps {
   children: ReactNode
@@ -20,6 +22,8 @@ export default function MenuLayout({ children }: MenuLayoutProps) {
     await authServices.logoutUser()
     dispatch(logout())
   }
+
+  
 
   return (
     <Flex bg={'black.950'} w={'full'} h={'100vh'}>
@@ -41,6 +45,18 @@ export default function MenuLayout({ children }: MenuLayoutProps) {
         </Flex>
         <Flex flexDir={'column'} align={'center'}>
           <Avatar src={user.picture} name={user.name} mb={'10px'} />
+          <Flex
+            flexDir={'column'}
+            align={'center'}
+            p={'10px'}
+            cursor={'pointer'}
+            onClick={() => dispatch(setIsNewGroup(true))}
+          >
+            <MdGroups size={'30px'} />
+            <Text fontSize={'18px'} mt={'3px'}>
+              + Group
+            </Text>
+          </Flex>
           <Flex
             flexDir={'column'}
             align={'center'}
